@@ -1,0 +1,213 @@
+[
+  {
+    "item_id": "offer-01",
+    "title": "Rooftop dinner offer",
+    "description": "Illustrative $30 off one qualifying mock dining purchase.",
+    "category": "dining",
+    "tags": [
+      "fine dining",
+      "dining"
+    ],
+    "market": "US",
+    "segment": "consumer",
+    "geography": "Rome",
+    "valid_from": "2026-09-01",
+    "valid_to": "2026-12-31",
+    "last_verified": "2026-09-17",
+    "source": "synthetic-catalog:offer-01",
+    "catalog_version": "synthetic-v1",
+    "synthetic": true,
+    "conditions": [
+      "One qualifying purchase and mock offer enrollment are assumed.",
+      "Not combinable with other dining group values."
+    ],
+    "kind": "offer",
+    "offer_id": "offer-01",
+    "merchant_id": "merchant-01",
+    "eligible_products": [
+      "card-a",
+      "card-b"
+    ],
+    "location": "Rome",
+    "value_type": "savings",
+    "value_amount": "30",
+    "currency": "USD",
+    "stackable": true,
+    "stacking_group": "dining"
+  },
+  {
+    "item_id": "offer-02",
+    "title": "Gallery visit offer",
+    "description": "Illustrative $12 off one qualifying mock entertainment purchase.",
+    "category": "entertainment",
+    "tags": [
+      "museums",
+      "culture"
+    ],
+    "market": "US",
+    "segment": "consumer",
+    "geography": "Rome",
+    "valid_from": "2026-09-01",
+    "valid_to": "2026-12-31",
+    "last_verified": "2026-09-17",
+    "source": "synthetic-catalog:offer-02",
+    "catalog_version": "synthetic-v1",
+    "synthetic": true,
+    "conditions": [
+      "One qualifying purchase and mock offer enrollment are assumed.",
+      "Not combinable with other culture group values."
+    ],
+    "kind": "offer",
+    "offer_id": "offer-02",
+    "merchant_id": "merchant-02",
+    "eligible_products": [
+      "card-a",
+      "card-c"
+    ],
+    "location": "Rome",
+    "value_type": "savings",
+    "value_amount": "12",
+    "currency": "USD",
+    "stackable": true,
+    "stacking_group": "culture"
+  },
+  {
+    "item_id": "offer-03",
+    "title": "Courtyard stay offer",
+    "description": "Illustrative $65 off one qualifying mock hotel purchase.",
+    "category": "hotel",
+    "tags": [
+      "luxury hotels"
+    ],
+    "market": "US",
+    "segment": "consumer",
+    "geography": "Rome",
+    "valid_from": "2026-09-01",
+    "valid_to": "2026-12-31",
+    "last_verified": "2026-09-17",
+    "source": "synthetic-catalog:offer-03",
+    "catalog_version": "synthetic-v1",
+    "synthetic": true,
+    "conditions": [
+      "One qualifying purchase and mock offer enrollment are assumed.",
+      "Not combinable with other hotel group values."
+    ],
+    "kind": "offer",
+    "offer_id": "offer-03",
+    "merchant_id": "merchant-03",
+    "eligible_products": [
+      "card-b"
+    ],
+    "location": "Rome",
+    "value_type": "savings",
+    "value_amount": "65",
+    "currency": "USD",
+    "stackable": true,
+    "stacking_group": "hotel"
+  },
+  {
+    "item_id": "offer-04",
+    "title": "Design atelier offer",
+    "description": "Illustrative $45 off one qualifying mock shopping purchase.",
+    "category": "shopping",
+    "tags": [
+      "shopping"
+    ],
+    "market": "US",
+    "segment": "consumer",
+    "geography": "Rome",
+    "valid_from": "2026-09-01",
+    "valid_to": "2026-12-31",
+    "last_verified": "2026-09-17",
+    "source": "synthetic-catalog:offer-04",
+    "catalog_version": "synthetic-v1",
+    "synthetic": true,
+    "conditions": [
+      "One qualifying purchase and mock offer enrollment are assumed.",
+      "Not combinable with other shopping group values."
+    ],
+    "kind": "offer",
+    "offer_id": "offer-04",
+    "merchant_id": "merchant-04",
+    "eligible_products": [
+      "card-b"
+    ],
+    "location": "Rome",
+    "value_type": "savings",
+    "value_amount": "45",
+    "currency": "USD",
+    "stackable": true,
+    "stacking_group": "shopping"
+  },
+  {
+    "item_id": "offer-05",
+    "title": "Neighborhood dining offer",
+    "description": "Illustrative $18 off one qualifying mock dining purchase.",
+    "category": "dining",
+    "tags": [
+      "dining"
+    ],
+    "market": "US",
+    "segment": "consumer",
+    "geography": "Rome",
+    "valid_from": "2026-09-01",
+    "valid_to": "2026-12-31",
+    "last_verified": "2026-09-17",
+    "source": "synthetic-catalog:offer-05",
+    "catalog_version": "synthetic-v1",
+    "synthetic": true,
+    "conditions": [
+      "One qualifying purchase and mock offer enrollment are assumed.",
+      "Not combinable with other dining group values."
+    ],
+    "kind": "offer",
+    "offer_id": "offer-05",
+    "merchant_id": "merchant-05",
+    "eligible_products": [
+      "card-a",
+      "card-c"
+    ],
+    "location": "Rome",
+    "value_type": "savings",
+    "value_amount": "18",
+    "currency": "USD",
+    "stackable": true,
+    "stacking_group": "dining"
+  },
+  {
+    "item_id": "offer-06",
+    "title": "Portico shopping offer",
+    "description": "Illustrative $22 off one qualifying mock shopping purchase.",
+    "category": "shopping",
+    "tags": [
+      "shopping"
+    ],
+    "market": "US",
+    "segment": "consumer",
+    "geography": "Rome",
+    "valid_from": "2026-09-01",
+    "valid_to": "2026-12-31",
+    "last_verified": "2026-09-17",
+    "source": "synthetic-catalog:offer-06",
+    "catalog_version": "synthetic-v1",
+    "synthetic": true,
+    "conditions": [
+      "One qualifying purchase and mock offer enrollment are assumed.",
+      "Not combinable with other shopping group values."
+    ],
+    "kind": "offer",
+    "offer_id": "offer-06",
+    "merchant_id": "merchant-08",
+    "eligible_products": [
+      "card-a",
+      "card-b",
+      "card-c"
+    ],
+    "location": "Rome",
+    "value_type": "savings",
+    "value_amount": "22",
+    "currency": "USD",
+    "stackable": true,
+    "stacking_group": "shopping"
+  }
+]

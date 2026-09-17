@@ -1,0 +1,62 @@
+[
+  {
+    "customer_id": "cust-prospect",
+    "display_name": "The curious explorer",
+    "lifecycle_stage": "prospect",
+    "existing_cards": [],
+    "stated_preferences": [
+      "dining",
+      "culture"
+    ],
+    "suppressed_preferences": [],
+    "consent": {
+      "allowed": true,
+      "purpose": "personalization"
+    },
+    "market": "US",
+    "segment": "consumer",
+    "synthetic": true
+  },
+  {
+    "customer_id": "cust-dining",
+    "display_name": "The culture seeker",
+    "lifecycle_stage": "member",
+    "existing_cards": [
+      "card-a",
+      "card-b"
+    ],
+    "stated_preferences": [
+      "fine dining",
+      "museums"
+    ],
+    "suppressed_preferences": [],
+    "consent": {
+      "allowed": true,
+      "purpose": "personalization"
+    },
+    "market": "US",
+    "segment": "consumer",
+    "synthetic": true
+  },
+  {
+    "customer_id": "cust-stay",
+    "display_name": "The considered traveler",
+    "lifecycle_stage": "member",
+    "existing_cards": [
+      "card-a",
+      "card-b"
+    ],
+    "stated_preferences": [
+      "shopping",
+      "luxury hotels"
+    ],
+    "suppressed_preferences": [],
+    "consent": {
+      "allowed": true,
+      "purpose": "personalization"
+    },
+    "market": "US",
+    "segment": "consumer",
+    "synthetic": true
+  }
+]

@@ -1,0 +1,235 @@
+[
+  {
+    "item_id": "merchant-01",
+    "title": "Terrazza Lume",
+    "description": "A fictional rooftop dining room overlooking a quiet Roman courtyard.",
+    "category": "dining",
+    "tags": [
+      "fine dining",
+      "dining"
+    ],
+    "market": "US",
+    "segment": "consumer",
+    "geography": "Rome",
+    "valid_from": "2026-09-01",
+    "valid_to": "2026-12-31",
+    "last_verified": "2026-09-17",
+    "source": "synthetic-catalog:merchant-01",
+    "catalog_version": "synthetic-v1",
+    "synthetic": true,
+    "conditions": [
+      "Merchant and card acceptance are synthetic demo facts only."
+    ],
+    "kind": "merchant",
+    "merchant_id": "merchant-01",
+    "name": "Terrazza Lume",
+    "city": "Rome",
+    "accepting_products": [
+      "card-a",
+      "card-b"
+    ]
+  },
+  {
+    "item_id": "merchant-02",
+    "title": "Atelier delle Arti",
+    "description": "A fictional gallery experience with a small-group collection visit.",
+    "category": "entertainment",
+    "tags": [
+      "museums",
+      "culture"
+    ],
+    "market": "US",
+    "segment": "consumer",
+    "geography": "Rome",
+    "valid_from": "2026-09-01",
+    "valid_to": "2026-12-31",
+    "last_verified": "2026-09-17",
+    "source": "synthetic-catalog:merchant-02",
+    "catalog_version": "synthetic-v1",
+    "synthetic": true,
+    "conditions": [
+      "Merchant and card acceptance are synthetic demo facts only."
+    ],
+    "kind": "merchant",
+    "merchant_id": "merchant-02",
+    "name": "Atelier delle Arti",
+    "city": "Rome",
+    "accepting_products": [
+      "card-a",
+      "card-c"
+    ]
+  },
+  {
+    "item_id": "merchant-03",
+    "title": "Palazzo Alba",
+    "description": "A fictional boutique hotel with a courtyard and breakfast room.",
+    "category": "hotel",
+    "tags": [
+      "luxury hotels"
+    ],
+    "market": "US",
+    "segment": "consumer",
+    "geography": "Rome",
+    "valid_from": "2026-09-01",
+    "valid_to": "2026-12-31",
+    "last_verified": "2026-09-17",
+    "source": "synthetic-catalog:merchant-03",
+    "catalog_version": "synthetic-v1",
+    "synthetic": true,
+    "conditions": [
+      "Merchant and card acceptance are synthetic demo facts only."
+    ],
+    "kind": "merchant",
+    "merchant_id": "merchant-03",
+    "name": "Palazzo Alba",
+    "city": "Rome",
+    "accepting_products": [
+      "card-b"
+    ]
+  },
+  {
+    "item_id": "merchant-04",
+    "title": "Via Studio",
+    "description": "A fictional design boutique featuring locally inspired objects.",
+    "category": "shopping",
+    "tags": [
+      "shopping"
+    ],
+    "market": "US",
+    "segment": "consumer",
+    "geography": "Rome",
+    "valid_from": "2026-09-01",
+    "valid_to": "2026-12-31",
+    "last_verified": "2026-09-17",
+    "source": "synthetic-catalog:merchant-04",
+    "catalog_version": "synthetic-v1",
+    "synthetic": true,
+    "conditions": [
+      "Merchant and card acceptance are synthetic demo facts only."
+    ],
+    "kind": "merchant",
+    "merchant_id": "merchant-04",
+    "name": "Via Studio",
+    "city": "Rome",
+    "accepting_products": [
+      "card-b"
+    ]
+  },
+  {
+    "item_id": "merchant-05",
+    "title": "Trattoria Sera",
+    "description": "A fictional neighborhood dining venue for a relaxed evening.",
+    "category": "dining",
+    "tags": [
+      "dining"
+    ],
+    "market": "US",
+    "segment": "consumer",
+    "geography": "Rome",
+    "valid_from": "2026-09-01",
+    "valid_to": "2026-12-31",
+    "last_verified": "2026-09-17",
+    "source": "synthetic-catalog:merchant-05",
+    "catalog_version": "synthetic-v1",
+    "synthetic": true,
+    "conditions": [
+      "Merchant and card acceptance are synthetic demo facts only."
+    ],
+    "kind": "merchant",
+    "merchant_id": "merchant-05",
+    "name": "Trattoria Sera",
+    "city": "Rome",
+    "accepting_products": [
+      "card-a",
+      "card-c"
+    ]
+  },
+  {
+    "item_id": "merchant-06",
+    "title": "Museo delle Forme",
+    "description": "A fictional museum of art and design.",
+    "category": "entertainment",
+    "tags": [
+      "museums",
+      "culture"
+    ],
+    "market": "US",
+    "segment": "consumer",
+    "geography": "Rome",
+    "valid_from": "2026-09-01",
+    "valid_to": "2026-12-31",
+    "last_verified": "2026-09-17",
+    "source": "synthetic-catalog:merchant-06",
+    "catalog_version": "synthetic-v1",
+    "synthetic": true,
+    "conditions": [
+      "Merchant and card acceptance are synthetic demo facts only."
+    ],
+    "kind": "merchant",
+    "merchant_id": "merchant-06",
+    "name": "Museo delle Forme",
+    "city": "Rome",
+    "accepting_products": [
+      "card-a",
+      "card-c"
+    ]
+  },
+  {
+    "item_id": "merchant-07",
+    "title": "Casa Celeste",
+    "description": "A fictional hotel concept for a restful city stay.",
+    "category": "hotel",
+    "tags": [
+      "luxury hotels"
+    ],
+    "market": "US",
+    "segment": "consumer",
+    "geography": "Rome",
+    "valid_from": "2026-09-01",
+    "valid_to": "2026-12-31",
+    "last_verified": "2026-09-17",
+    "source": "synthetic-catalog:merchant-07",
+    "catalog_version": "synthetic-v1",
+    "synthetic": true,
+    "conditions": [
+      "Merchant and card acceptance are synthetic demo facts only."
+    ],
+    "kind": "merchant",
+    "merchant_id": "merchant-07",
+    "name": "Casa Celeste",
+    "city": "Rome",
+    "accepting_products": [
+      "card-b"
+    ]
+  },
+  {
+    "item_id": "merchant-08",
+    "title": "Portico Market",
+    "description": "A fictional collection of independent design shops.",
+    "category": "shopping",
+    "tags": [
+      "shopping"
+    ],
+    "market": "US",
+    "segment": "consumer",
+    "geography": "Rome",
+    "valid_from": "2026-09-01",
+    "valid_to": "2026-12-31",
+    "last_verified": "2026-09-17",
+    "source": "synthetic-catalog:merchant-08",
+    "catalog_version": "synthetic-v1",
+    "synthetic": true,
+    "conditions": [
+      "Merchant and card acceptance are synthetic demo facts only."
+    ],
+    "kind": "merchant",
+    "merchant_id": "merchant-08",
+    "name": "Portico Market",
+    "city": "Rome",
+    "accepting_products": [
+      "card-a",
+      "card-b",
+      "card-c"
+    ]
+  }
+]

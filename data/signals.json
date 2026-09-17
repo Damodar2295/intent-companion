@@ -1,0 +1,209 @@
+[
+  {
+    "event_id": "evt-1-1",
+    "customer_id": "cust-prospect",
+    "source": "synthetic-scenario",
+    "event_type": "ad_click",
+    "timestamp": "2026-09-17T07:00:00Z",
+    "consent": {
+      "allowed": true,
+      "purpose": "personalization"
+    },
+    "context": {
+      "origin": "JFK",
+      "destination": "Rome",
+      "start_date": "2026-10-10",
+      "end_date": "2026-10-15",
+      "purpose": "leisure",
+      "preferences": [
+        "dining",
+        "culture"
+      ]
+    },
+    "synthetic": true
+  },
+  {
+    "event_id": "evt-1-2",
+    "customer_id": "cust-prospect",
+    "source": "synthetic-scenario",
+    "event_type": "travel_search",
+    "timestamp": "2026-09-17T08:00:00Z",
+    "consent": {
+      "allowed": true,
+      "purpose": "personalization"
+    },
+    "context": {
+      "origin": "JFK",
+      "destination": "Rome",
+      "start_date": "2026-10-10",
+      "end_date": "2026-10-15",
+      "purpose": "leisure",
+      "preferences": [
+        "dining",
+        "culture"
+      ]
+    },
+    "synthetic": true
+  },
+  {
+    "event_id": "evt-1-3",
+    "customer_id": "cust-prospect",
+    "source": "synthetic-scenario",
+    "event_type": "hotel_search",
+    "timestamp": "2026-09-17T09:00:00Z",
+    "consent": {
+      "allowed": true,
+      "purpose": "personalization"
+    },
+    "context": {
+      "origin": "JFK",
+      "destination": "Rome",
+      "start_date": "2026-10-10",
+      "end_date": "2026-10-15",
+      "purpose": "leisure",
+      "preferences": [
+        "dining",
+        "culture"
+      ]
+    },
+    "synthetic": true
+  },
+  {
+    "event_id": "evt-2-1",
+    "customer_id": "cust-dining",
+    "source": "synthetic-scenario",
+    "event_type": "ad_click",
+    "timestamp": "2026-09-17T07:00:00Z",
+    "consent": {
+      "allowed": true,
+      "purpose": "personalization"
+    },
+    "context": {
+      "origin": "JFK",
+      "destination": "Rome",
+      "start_date": "2026-10-10",
+      "end_date": "2026-10-15",
+      "purpose": "leisure",
+      "preferences": [
+        "fine dining",
+        "museums"
+      ]
+    },
+    "synthetic": true
+  },
+  {
+    "event_id": "evt-2-2",
+    "customer_id": "cust-dining",
+    "source": "synthetic-scenario",
+    "event_type": "travel_search",
+    "timestamp": "2026-09-17T08:00:00Z",
+    "consent": {
+      "allowed": true,
+      "purpose": "personalization"
+    },
+    "context": {
+      "origin": "JFK",
+      "destination": "Rome",
+      "start_date": "2026-10-10",
+      "end_date": "2026-10-15",
+      "purpose": "leisure",
+      "preferences": [
+        "fine dining",
+        "museums"
+      ]
+    },
+    "synthetic": true
+  },
+  {
+    "event_id": "evt-2-3",
+    "customer_id": "cust-dining",
+    "source": "synthetic-scenario",
+    "event_type": "hotel_search",
+    "timestamp": "2026-09-17T09:00:00Z",
+    "consent": {
+      "allowed": true,
+      "purpose": "personalization"
+    },
+    "context": {
+      "origin": "JFK",
+      "destination": "Rome",
+      "start_date": "2026-10-10",
+      "end_date": "2026-10-15",
+      "purpose": "leisure",
+      "preferences": [
+        "fine dining",
+        "museums"
+      ]
+    },
+    "synthetic": true
+  },
+  {
+    "event_id": "evt-3-1",
+    "customer_id": "cust-stay",
+    "source": "synthetic-scenario",
+    "event_type": "ad_click",
+    "timestamp": "2026-09-17T07:00:00Z",
+    "consent": {
+      "allowed": true,
+      "purpose": "personalization"
+    },
+    "context": {
+      "origin": "JFK",
+      "destination": "Rome",
+      "start_date": "2026-10-10",
+      "end_date": "2026-10-15",
+      "purpose": "leisure",
+      "preferences": [
+        "shopping",
+        "luxury hotels"
+      ]
+    },
+    "synthetic": true
+  },
+  {
+    "event_id": "evt-3-2",
+    "customer_id": "cust-stay",
+    "source": "synthetic-scenario",
+    "event_type": "travel_search",
+    "timestamp": "2026-09-17T08:00:00Z",
+    "consent": {
+      "allowed": true,
+      "purpose": "personalization"
+    },
+    "context": {
+      "origin": "JFK",
+      "destination": "Rome",
+      "start_date": "2026-10-10",
+      "end_date": "2026-10-15",
+      "purpose": "leisure",
+      "preferences": [
+        "shopping",
+        "luxury hotels"
+      ]
+    },
+    "synthetic": true
+  },
+  {
+    "event_id": "evt-3-3",
+    "customer_id": "cust-stay",
+    "source": "synthetic-scenario",
+    "event_type": "hotel_search",
+    "timestamp": "2026-09-17T09:00:00Z",
+    "consent": {
+      "allowed": true,
+      "purpose": "personalization"
+    },
+    "context": {
+      "origin": "JFK",
+      "destination": "Rome",
+      "start_date": "2026-10-10",
+      "end_date": "2026-10-15",
+      "purpose": "leisure",
+      "preferences": [
+        "shopping",
+        "luxury hotels"
+      ]
+    },
+    "synthetic": true
+  }
+]

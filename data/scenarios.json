@@ -1,0 +1,35 @@
+[
+  {
+    "scenario_id": "prospect",
+    "customer_id": "cust-prospect",
+    "title": "A new chapter",
+    "subtitle": "Prospect · Dining & culture",
+    "signal_ids": [
+      "evt-1-1",
+      "evt-1-2",
+      "evt-1-3"
+    ]
+  },
+  {
+    "scenario_id": "dining",
+    "customer_id": "cust-dining",
+    "title": "A taste of culture",
+    "subtitle": "Card member · Fine dining & museums",
+    "signal_ids": [
+      "evt-2-1",
+      "evt-2-2",
+      "evt-2-3"
+    ]
+  },
+  {
+    "scenario_id": "stay",
+    "customer_id": "cust-stay",
+    "title": "A considered escape",
+    "subtitle": "Card member · Shopping & boutique stays",
+    "signal_ids": [
+      "evt-3-1",
+      "evt-3-2",
+      "evt-3-3"
+    ]
+  }
+]

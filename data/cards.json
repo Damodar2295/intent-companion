@@ -1,0 +1,101 @@
+[
+  {
+    "item_id": "card-a",
+    "title": "Savor · Demo Card",
+    "description": "A synthetic card concept for dining and cultural discovery.",
+    "category": "dining",
+    "tags": [
+      "fine dining",
+      "dining",
+      "museums",
+      "culture"
+    ],
+    "market": "US",
+    "segment": "consumer",
+    "geography": "Rome",
+    "valid_from": "2026-09-01",
+    "valid_to": "2026-12-31",
+    "last_verified": "2026-09-17",
+    "source": "synthetic-catalog:card-a",
+    "catalog_version": "synthetic-v1",
+    "synthetic": true,
+    "conditions": [
+      "Concept product only. No credit eligibility or approval assessment.",
+      "Potential values exclude card fees."
+    ],
+    "kind": "card",
+    "product_id": "card-a",
+    "product_name": "Savor · Demo Card",
+    "product_description": "A synthetic card concept for dining and cultural discovery.",
+    "product_categories": [
+      "dining",
+      "entertainment"
+    ],
+    "product_rules": "contextual_only"
+  },
+  {
+    "item_id": "card-b",
+    "title": "Sanctuary · Demo Card",
+    "description": "A synthetic card concept for considered stays and shopping.",
+    "category": "hotel",
+    "tags": [
+      "luxury hotels",
+      "shopping"
+    ],
+    "market": "US",
+    "segment": "consumer",
+    "geography": "Rome",
+    "valid_from": "2026-09-01",
+    "valid_to": "2026-12-31",
+    "last_verified": "2026-09-17",
+    "source": "synthetic-catalog:card-b",
+    "catalog_version": "synthetic-v1",
+    "synthetic": true,
+    "conditions": [
+      "Concept product only. No credit eligibility or approval assessment.",
+      "Potential values exclude card fees."
+    ],
+    "kind": "card",
+    "product_id": "card-b",
+    "product_name": "Sanctuary · Demo Card",
+    "product_description": "A synthetic card concept for considered stays and shopping.",
+    "product_categories": [
+      "hotel",
+      "shopping"
+    ],
+    "product_rules": "contextual_only"
+  },
+  {
+    "item_id": "card-c",
+    "title": "Wander · Demo Card",
+    "description": "A synthetic card concept for travel and city discovery.",
+    "category": "travel",
+    "tags": [
+      "culture",
+      "museums"
+    ],
+    "market": "US",
+    "segment": "consumer",
+    "geography": "Rome",
+    "valid_from": "2026-09-01",
+    "valid_to": "2026-12-31",
+    "last_verified": "2026-09-17",
+    "source": "synthetic-catalog:card-c",
+    "catalog_version": "synthetic-v1",
+    "synthetic": true,
+    "conditions": [
+      "Concept product only. No credit eligibility or approval assessment.",
+      "Potential values exclude card fees."
+    ],
+    "kind": "card",
+    "product_id": "card-c",
+    "product_name": "Wander · Demo Card",
+    "product_description": "A synthetic card concept for travel and city discovery.",
+    "product_categories": [
+      "travel",
+      "entertainment",
+      "lounge"
+    ],
+    "product_rules": "contextual_only"
+  }
+]
