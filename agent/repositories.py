@@ -44,6 +44,7 @@ class SQLiteRepository:
             self.db.executescript("""
                 PRAGMA foreign_keys = ON;
                 CREATE TABLE IF NOT EXISTS metadata (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS intent_feedback (id TEXT PRIMARY KEY, status TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS customers (id TEXT PRIMARY KEY, data TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS signals (
                     id TEXT PRIMARY KEY, customer_id TEXT NOT NULL REFERENCES customers(id), data TEXT NOT NULL);
@@ -58,24 +59,25 @@ class SQLiteRepository:
                     id TEXT PRIMARY KEY, customer_id TEXT NOT NULL, generated_at TEXT NOT NULL, data TEXT NOT NULL);
             """)
 
-    def seed(self) -> None:
+    def seed(self, fixture_dir=None) -> None:
         """Version flag prevents reseeding from resurrecting edits on subsequent starts."""
+        fixture_dir = fixture_dir or ROOT / "data"
         with self.lock, self.db:
             if self.db.execute("SELECT value FROM metadata WHERE key='seed_version'").fetchone():
                 return
-            for obj in json.loads((ROOT / "data/customers.json").read_text()):
+            for obj in json.loads((fixture_dir / "customers.json").read_text()):
                 customer = CustomerContext.model_validate(obj)
                 self.db.execute(
                     "INSERT INTO customers VALUES (?, ?)", (customer.customer_id, customer.model_dump_json())
                 )
-            for obj in json.loads((ROOT / "data/signals.json").read_text()):
+            for obj in json.loads((fixture_dir / "signals.json").read_text()):
                 signal = IntentSignal.model_validate(obj)
                 self.db.execute(
                     "INSERT INTO signals VALUES (?, ?, ?)",
                     (signal.event_id, signal.customer_id, signal.model_dump_json()),
                 )
             for filename in ("cards", "benefits", "offers", "rewards", "merchants"):
-                for obj in json.loads((ROOT / f"data/{filename}.json").read_text()):
+                for obj in json.loads((fixture_dir / f"{filename}.json").read_text()):
                     item = CATALOG_ADAPTER.validate_python(obj)
                     self.db.execute(
                         "INSERT INTO catalog VALUES (?, ?, ?, ?, ?, ?)",

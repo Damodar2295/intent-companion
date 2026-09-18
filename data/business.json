@@ -1,0 +1,816 @@
+{
+  "businesses": [
+    {
+      "business_id": "biz-bakery",
+      "name": "Northstar Bakery",
+      "industry": "bakery",
+      "held_products": [
+        "biz-flow",
+        "biz-grow"
+      ],
+      "priorities": [
+        "packaging",
+        "equipment",
+        "employees",
+        "ingredients"
+      ],
+      "consent": {
+        "allowed": true
+      }
+    },
+    {
+      "business_id": "biz-consultancy",
+      "name": "Fieldwork Consulting",
+      "industry": "consultancy",
+      "held_products": [
+        "biz-flow",
+        "biz-grow"
+      ],
+      "priorities": [
+        "software",
+        "travel",
+        "employees"
+      ],
+      "consent": {
+        "allowed": true
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "bakery",
+      "business_id": "biz-bakery",
+      "goal_id": "goal-bakery-growth",
+      "title": "Room to rise.",
+      "subtitle": "A second location. A new chapter.",
+      "goal_text": "Open a second bakery and purchase equipment, packaging and employee cards.",
+      "signal_ids": [
+        "biz-bakery-goal",
+        "biz-bakery-spend-0",
+        "biz-bakery-spend-1",
+        "biz-bakery-spend-2",
+        "biz-bakery-spend-3",
+        "biz-bakery-search",
+        "biz-bakery-team"
+      ],
+      "default_priorities": [
+        "packaging",
+        "equipment",
+        "employees",
+        "ingredients"
+      ]
+    },
+    {
+      "scenario_id": "consultancy",
+      "business_id": "biz-consultancy",
+      "goal_id": "goal-consultancy-growth",
+      "title": "Ready for what’s next.",
+      "subtitle": "New clients. A growing team.",
+      "goal_text": "Grow our consultancy with software, client travel and employee cards.",
+      "signal_ids": [
+        "biz-consultancy-goal",
+        "biz-consultancy-spend-0",
+        "biz-consultancy-spend-1",
+        "biz-consultancy-spend-2",
+        "biz-consultancy-search",
+        "biz-consultancy-team"
+      ],
+      "default_priorities": [
+        "software",
+        "travel",
+        "employees"
+      ]
+    }
+  ],
+  "products": [
+    {
+      "item_id": "biz-flow",
+      "name": "Flow · Business Demo",
+      "source": "synthetic-business:biz-flow",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-12-31",
+      "last_verified": "2026-09-17"
+    },
+    {
+      "item_id": "biz-grow",
+      "name": "Grow · Business Demo",
+      "source": "synthetic-business:biz-grow",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-12-31",
+      "last_verified": "2026-09-17"
+    }
+  ],
+  "suppliers": [
+    {
+      "item_id": "supplier-ingredients",
+      "name": "Harvest Ingredients",
+      "source": "synthetic-business:supplier-ingredients",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-12-31",
+      "last_verified": "2026-09-17",
+      "category": "ingredients",
+      "accepting_products": [
+        "biz-flow",
+        "biz-grow"
+      ]
+    },
+    {
+      "item_id": "supplier-packaging",
+      "name": "Paper & Parcel Supply",
+      "source": "synthetic-business:supplier-packaging",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-12-31",
+      "last_verified": "2026-09-17",
+      "category": "packaging",
+      "accepting_products": [
+        "biz-flow",
+        "biz-grow"
+      ]
+    },
+    {
+      "item_id": "supplier-equipment",
+      "name": "Ovenworks Equipment",
+      "source": "synthetic-business:supplier-equipment",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-12-31",
+      "last_verified": "2026-09-17",
+      "category": "equipment",
+      "accepting_products": [
+        "biz-flow",
+        "biz-grow"
+      ]
+    },
+    {
+      "item_id": "supplier-software",
+      "name": "Cloudwork Software",
+      "source": "synthetic-business:supplier-software",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-12-31",
+      "last_verified": "2026-09-17",
+      "category": "software",
+      "accepting_products": [
+        "biz-flow",
+        "biz-grow"
+      ]
+    },
+    {
+      "item_id": "supplier-travel",
+      "name": "ClientRoute Travel",
+      "source": "synthetic-business:supplier-travel",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-12-31",
+      "last_verified": "2026-09-17",
+      "category": "travel",
+      "accepting_products": [
+        "biz-flow",
+        "biz-grow"
+      ]
+    },
+    {
+      "item_id": "supplier-employees",
+      "name": "TeamDesk Services",
+      "source": "synthetic-business:supplier-employees",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-12-31",
+      "last_verified": "2026-09-17",
+      "category": "employees",
+      "accepting_products": [
+        "biz-flow",
+        "biz-grow"
+      ]
+    },
+    {
+      "item_id": "supplier-stale",
+      "name": "Unverified Supply",
+      "source": "synthetic-business:supplier-stale",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-12-31",
+      "last_verified": "2026-01-01",
+      "category": "packaging",
+      "accepting_products": [
+        "biz-flow"
+      ]
+    }
+  ],
+  "opportunities": [
+    {
+      "item_id": "business-offer-1",
+      "name": "Packaging purchase credit",
+      "source": "synthetic-business:business-offer-1",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-12-31",
+      "last_verified": "2026-09-17",
+      "category": "packaging",
+      "industries": [
+        "bakery"
+      ],
+      "goal_types": [
+        "expansion",
+        "client_growth",
+        "replenishment"
+      ],
+      "supplier_id": "supplier-packaging",
+      "product_ids": [
+        "biz-flow"
+      ],
+      "description": "Illustrative packaging value for a qualifying synthetic purchase.",
+      "rule": "percent_savings",
+      "rate": "0.04",
+      "cap": 100,
+      "point_value": null,
+      "minimum_spend": "100",
+      "stacking_group": "packaging-purchase",
+      "conditions": [
+        "Synthetic illustration only; no real supplier or card terms.",
+        "Applies once to qualifying spend in the selected period; alternatives are not additive."
+      ]
+    },
+    {
+      "item_id": "business-offer-2",
+      "name": "Equipment order savings",
+      "source": "synthetic-business:business-offer-2",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-12-31",
+      "last_verified": "2026-09-17",
+      "category": "equipment",
+      "industries": [
+        "bakery"
+      ],
+      "goal_types": [
+        "expansion",
+        "client_growth",
+        "replenishment"
+      ],
+      "supplier_id": "supplier-equipment",
+      "product_ids": [
+        "biz-grow"
+      ],
+      "description": "Illustrative equipment value for a qualifying synthetic purchase.",
+      "rule": "percent_savings",
+      "rate": "0.02",
+      "cap": 200,
+      "point_value": null,
+      "minimum_spend": "100",
+      "stacking_group": "equipment-purchase",
+      "conditions": [
+        "Synthetic illustration only; no real supplier or card terms.",
+        "Applies once to qualifying spend in the selected period; alternatives are not additive."
+      ]
+    },
+    {
+      "item_id": "business-offer-3",
+      "name": "Ingredient purchase rewards",
+      "source": "synthetic-business:business-offer-3",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-12-31",
+      "last_verified": "2026-09-17",
+      "category": "ingredients",
+      "industries": [
+        "bakery"
+      ],
+      "goal_types": [
+        "expansion",
+        "client_growth",
+        "replenishment"
+      ],
+      "supplier_id": "supplier-ingredients",
+      "product_ids": [
+        "biz-flow"
+      ],
+      "description": "Illustrative ingredients value for a qualifying synthetic purchase.",
+      "rule": "points_per_dollar",
+      "rate": "2",
+      "cap": null,
+      "point_value": "0.01",
+      "minimum_spend": "100",
+      "stacking_group": "ingredients-purchase",
+      "conditions": [
+        "Synthetic illustration only; no real supplier or card terms.",
+        "Applies once to qualifying spend in the selected period; alternatives are not additive."
+      ]
+    },
+    {
+      "item_id": "business-offer-4",
+      "name": "Software subscription credit",
+      "source": "synthetic-business:business-offer-4",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-12-31",
+      "last_verified": "2026-09-17",
+      "category": "software",
+      "industries": [
+        "consultancy"
+      ],
+      "goal_types": [
+        "expansion",
+        "client_growth",
+        "replenishment"
+      ],
+      "supplier_id": "supplier-software",
+      "product_ids": [
+        "biz-flow"
+      ],
+      "description": "Illustrative software value for a qualifying synthetic purchase.",
+      "rule": "percent_savings",
+      "rate": "0.05",
+      "cap": 60,
+      "point_value": null,
+      "minimum_spend": "100",
+      "stacking_group": "software-purchase",
+      "conditions": [
+        "Synthetic illustration only; no real supplier or card terms.",
+        "Applies once to qualifying spend in the selected period; alternatives are not additive."
+      ]
+    },
+    {
+      "item_id": "business-offer-5",
+      "name": "Client travel rewards",
+      "source": "synthetic-business:business-offer-5",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-12-31",
+      "last_verified": "2026-09-17",
+      "category": "travel",
+      "industries": [
+        "consultancy"
+      ],
+      "goal_types": [
+        "expansion",
+        "client_growth",
+        "replenishment"
+      ],
+      "supplier_id": "supplier-travel",
+      "product_ids": [
+        "biz-grow"
+      ],
+      "description": "Illustrative travel value for a qualifying synthetic purchase.",
+      "rule": "points_per_dollar",
+      "rate": "3",
+      "cap": null,
+      "point_value": "0.01",
+      "minimum_spend": "100",
+      "stacking_group": "travel-purchase",
+      "conditions": [
+        "Synthetic illustration only; no real supplier or card terms.",
+        "Applies once to qualifying spend in the selected period; alternatives are not additive."
+      ]
+    },
+    {
+      "item_id": "business-offer-6",
+      "name": "Explore employee spending controls",
+      "source": "synthetic-business:business-offer-6",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-12-31",
+      "last_verified": "2026-09-17",
+      "category": "employees",
+      "industries": [
+        "bakery",
+        "consultancy"
+      ],
+      "goal_types": [
+        "expansion",
+        "client_growth",
+        "replenishment"
+      ],
+      "supplier_id": "supplier-employees",
+      "product_ids": [
+        "biz-grow"
+      ],
+      "description": "Explore this fictional business feature; no monetary value or payment eligibility is asserted.",
+      "rule": "informational",
+      "rate": null,
+      "cap": null,
+      "point_value": null,
+      "minimum_spend": "0",
+      "stacking_group": "employees-purchase",
+      "conditions": [
+        "Synthetic illustration only; no real supplier or card terms.",
+        "Applies once to qualifying spend in the selected period; alternatives are not additive."
+      ]
+    },
+    {
+      "item_id": "business-offer-7",
+      "name": "Packaging reward alternative",
+      "source": "synthetic-business:business-offer-7",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-12-31",
+      "last_verified": "2026-09-17",
+      "category": "packaging",
+      "industries": [
+        "bakery"
+      ],
+      "goal_types": [
+        "expansion",
+        "client_growth",
+        "replenishment"
+      ],
+      "supplier_id": "supplier-packaging",
+      "product_ids": [
+        "biz-flow"
+      ],
+      "description": "Illustrative packaging value for a qualifying synthetic purchase.",
+      "rule": "points_per_dollar",
+      "rate": "2",
+      "cap": null,
+      "point_value": "0.01",
+      "minimum_spend": "100",
+      "stacking_group": "packaging-purchase",
+      "conditions": [
+        "Synthetic illustration only; no real supplier or card terms.",
+        "Applies once to qualifying spend in the selected period; alternatives are not additive."
+      ]
+    },
+    {
+      "item_id": "business-offer-8",
+      "name": "Software reward alternative",
+      "source": "synthetic-business:business-offer-8",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-12-31",
+      "last_verified": "2026-09-17",
+      "category": "software",
+      "industries": [
+        "consultancy"
+      ],
+      "goal_types": [
+        "expansion",
+        "client_growth",
+        "replenishment"
+      ],
+      "supplier_id": "supplier-software",
+      "product_ids": [
+        "biz-flow"
+      ],
+      "description": "Illustrative software value for a qualifying synthetic purchase.",
+      "rule": "points_per_dollar",
+      "rate": "2",
+      "cap": null,
+      "point_value": "0.01",
+      "minimum_spend": "100",
+      "stacking_group": "software-purchase",
+      "conditions": [
+        "Synthetic illustration only; no real supplier or card terms.",
+        "Applies once to qualifying spend in the selected period; alternatives are not additive."
+      ]
+    },
+    {
+      "item_id": "business-offer-9",
+      "name": "Payment schedule overview",
+      "source": "synthetic-business:business-offer-9",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-12-31",
+      "last_verified": "2026-09-17",
+      "category": "equipment",
+      "industries": [
+        "bakery"
+      ],
+      "goal_types": [
+        "expansion",
+        "client_growth",
+        "replenishment"
+      ],
+      "supplier_id": "supplier-equipment",
+      "product_ids": [
+        "biz-flow"
+      ],
+      "description": "Explore this fictional business feature; no monetary value or payment eligibility is asserted.",
+      "rule": "informational",
+      "rate": null,
+      "cap": null,
+      "point_value": null,
+      "minimum_spend": "0",
+      "stacking_group": "equipment-purchase",
+      "conditions": [
+        "Synthetic illustration only; no real supplier or card terms.",
+        "Applies once to qualifying spend in the selected period; alternatives are not additive."
+      ]
+    },
+    {
+      "item_id": "business-offer-expired",
+      "name": "Expired packaging promotion",
+      "source": "synthetic-business:business-offer-expired",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-09-10",
+      "last_verified": "2026-09-17",
+      "category": "packaging",
+      "industries": [
+        "bakery"
+      ],
+      "goal_types": [
+        "expansion",
+        "client_growth",
+        "replenishment"
+      ],
+      "supplier_id": "supplier-packaging",
+      "product_ids": [
+        "biz-flow"
+      ],
+      "description": "Illustrative packaging value for a qualifying synthetic purchase.",
+      "rule": "percent_savings",
+      "rate": "0.04",
+      "cap": 100,
+      "point_value": null,
+      "minimum_spend": "100",
+      "stacking_group": "packaging-purchase",
+      "conditions": [
+        "Synthetic illustration only; no real supplier or card terms.",
+        "Applies once to qualifying spend in the selected period; alternatives are not additive."
+      ]
+    },
+    {
+      "item_id": "business-offer-missing",
+      "name": "Equipment offer awaiting valuation",
+      "source": "synthetic-business:business-offer-missing",
+      "market": "US",
+      "service_area": "US",
+      "valid_from": "2026-09-01",
+      "valid_to": "2026-12-31",
+      "last_verified": "2026-09-17",
+      "category": "equipment",
+      "industries": [
+        "bakery"
+      ],
+      "goal_types": [
+        "expansion",
+        "client_growth",
+        "replenishment"
+      ],
+      "supplier_id": "supplier-equipment",
+      "product_ids": [
+        "biz-grow"
+      ],
+      "description": "Illustrative equipment value for a qualifying synthetic purchase.",
+      "rule": "percent_savings",
+      "rate": null,
+      "cap": 200,
+      "point_value": null,
+      "minimum_spend": "100",
+      "stacking_group": "equipment-purchase",
+      "conditions": [
+        "Synthetic illustration only; no real supplier or card terms.",
+        "Applies once to qualifying spend in the selected period; alternatives are not additive."
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "business_id": "biz-bakery",
+      "goal_id": "goal-bakery-growth",
+      "goal_type": "expansion",
+      "timestamp": "2026-09-17T10:00:00Z",
+      "consent": {
+        "allowed": true
+      },
+      "event_id": "biz-bakery-goal",
+      "event_type": "declared_goal"
+    },
+    {
+      "business_id": "biz-bakery",
+      "goal_id": "goal-bakery-growth",
+      "goal_type": "expansion",
+      "timestamp": "2026-09-17T10:00:00Z",
+      "consent": {
+        "allowed": true
+      },
+      "event_id": "biz-bakery-spend-0",
+      "event_type": "spend_observation",
+      "category": "packaging",
+      "spend": {
+        "observation_id": "biz-bakery-observation-0",
+        "category": "packaging",
+        "amount": "2500",
+        "payment_method": "other",
+        "status": "observed",
+        "period_start": "2026-09-01",
+        "period_end": "2026-09-17",
+        "observed_on": "2026-09-17"
+      }
+    },
+    {
+      "business_id": "biz-bakery",
+      "goal_id": "goal-bakery-growth",
+      "goal_type": "expansion",
+      "timestamp": "2026-09-17T10:00:00Z",
+      "consent": {
+        "allowed": true
+      },
+      "event_id": "biz-bakery-spend-1",
+      "event_type": "scheduled_payment",
+      "category": "equipment",
+      "spend": {
+        "observation_id": "biz-bakery-observation-1",
+        "category": "equipment",
+        "amount": "12000",
+        "payment_method": "undecided",
+        "status": "planned",
+        "period_start": "2026-10-01",
+        "period_end": "2026-10-31",
+        "observed_on": "2026-09-17"
+      }
+    },
+    {
+      "business_id": "biz-bakery",
+      "goal_id": "goal-bakery-growth",
+      "goal_type": "expansion",
+      "timestamp": "2026-09-17T10:00:00Z",
+      "consent": {
+        "allowed": true
+      },
+      "event_id": "biz-bakery-spend-2",
+      "event_type": "scheduled_payment",
+      "category": "employees",
+      "spend": {
+        "observation_id": "biz-bakery-observation-2",
+        "category": "employees",
+        "amount": "1500",
+        "payment_method": "undecided",
+        "status": "planned",
+        "period_start": "2026-10-01",
+        "period_end": "2026-10-31",
+        "observed_on": "2026-09-17"
+      }
+    },
+    {
+      "business_id": "biz-bakery",
+      "goal_id": "goal-bakery-growth",
+      "goal_type": "expansion",
+      "timestamp": "2026-09-17T10:00:00Z",
+      "consent": {
+        "allowed": true
+      },
+      "event_id": "biz-bakery-spend-3",
+      "event_type": "spend_observation",
+      "category": "ingredients",
+      "spend": {
+        "observation_id": "biz-bakery-observation-3",
+        "category": "ingredients",
+        "amount": "4000",
+        "payment_method": "held_card",
+        "status": "observed",
+        "period_start": "2026-09-01",
+        "period_end": "2026-09-17",
+        "observed_on": "2026-09-17"
+      }
+    },
+    {
+      "business_id": "biz-bakery",
+      "goal_id": "goal-bakery-growth",
+      "goal_type": "expansion",
+      "timestamp": "2026-09-17T10:00:00Z",
+      "consent": {
+        "allowed": true
+      },
+      "event_id": "biz-bakery-search",
+      "event_type": "supplier_search",
+      "category": "equipment"
+    },
+    {
+      "business_id": "biz-bakery",
+      "goal_id": "goal-bakery-growth",
+      "goal_type": "expansion",
+      "timestamp": "2026-09-17T10:00:00Z",
+      "consent": {
+        "allowed": true
+      },
+      "event_id": "biz-bakery-team",
+      "event_type": "employee_growth",
+      "category": "employees"
+    },
+    {
+      "business_id": "biz-consultancy",
+      "goal_id": "goal-consultancy-growth",
+      "goal_type": "client_growth",
+      "timestamp": "2026-09-17T10:00:00Z",
+      "consent": {
+        "allowed": true
+      },
+      "event_id": "biz-consultancy-goal",
+      "event_type": "declared_goal"
+    },
+    {
+      "business_id": "biz-consultancy",
+      "goal_id": "goal-consultancy-growth",
+      "goal_type": "client_growth",
+      "timestamp": "2026-09-17T10:00:00Z",
+      "consent": {
+        "allowed": true
+      },
+      "event_id": "biz-consultancy-spend-0",
+      "event_type": "spend_observation",
+      "category": "software",
+      "spend": {
+        "observation_id": "biz-consultancy-observation-0",
+        "category": "software",
+        "amount": "1200",
+        "payment_method": "other",
+        "status": "observed",
+        "period_start": "2026-09-01",
+        "period_end": "2026-09-17",
+        "observed_on": "2026-09-17"
+      }
+    },
+    {
+      "business_id": "biz-consultancy",
+      "goal_id": "goal-consultancy-growth",
+      "goal_type": "client_growth",
+      "timestamp": "2026-09-17T10:00:00Z",
+      "consent": {
+        "allowed": true
+      },
+      "event_id": "biz-consultancy-spend-1",
+      "event_type": "scheduled_payment",
+      "category": "travel",
+      "spend": {
+        "observation_id": "biz-consultancy-observation-1",
+        "category": "travel",
+        "amount": "3000",
+        "payment_method": "undecided",
+        "status": "planned",
+        "period_start": "2026-10-01",
+        "period_end": "2026-10-31",
+        "observed_on": "2026-09-17"
+      }
+    },
+    {
+      "business_id": "biz-consultancy",
+      "goal_id": "goal-consultancy-growth",
+      "goal_type": "client_growth",
+      "timestamp": "2026-09-17T10:00:00Z",
+      "consent": {
+        "allowed": true
+      },
+      "event_id": "biz-consultancy-spend-2",
+      "event_type": "scheduled_payment",
+      "category": "employees",
+      "spend": {
+        "observation_id": "biz-consultancy-observation-2",
+        "category": "employees",
+        "amount": "2000",
+        "payment_method": "undecided",
+        "status": "planned",
+        "period_start": "2026-10-01",
+        "period_end": "2026-10-31",
+        "observed_on": "2026-09-17"
+      }
+    },
+    {
+      "business_id": "biz-consultancy",
+      "goal_id": "goal-consultancy-growth",
+      "goal_type": "client_growth",
+      "timestamp": "2026-09-17T10:00:00Z",
+      "consent": {
+        "allowed": true
+      },
+      "event_id": "biz-consultancy-search",
+      "event_type": "supplier_search",
+      "category": "software"
+    },
+    {
+      "business_id": "biz-consultancy",
+      "goal_id": "goal-consultancy-growth",
+      "goal_type": "client_growth",
+      "timestamp": "2026-09-17T10:00:00Z",
+      "consent": {
+        "allowed": true
+      },
+      "event_id": "biz-consultancy-team",
+      "event_type": "employee_growth",
+      "category": "employees"
+    }
+  ]
+}

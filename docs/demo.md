@@ -19,6 +19,18 @@ The journey switch changes the active synthetic customer. Preferences remain sav
 
 ## Mocked components
 
+### Demonstrate intent forming from events
+
+Expand **Shape your trip** in either journey. Choose exploring, culture planning, booked holiday, business stay, or repeated clicks; edit the dates and click **Build my Rome experience**. Every event is persisted through `POST /signals`; after each event the UI calls `/intents/detect` with only that replay's IDs. The timeline displays the backend's contribution, aggregate score, and stage. The final intent generates the displayed recommendations through `/companion`. Saved profile preferences remain in effect; edit them to demonstrate different recommendations. Business purpose changes context but does not invent business-specific catalog rules. Out-of-validity dates can produce abstention.
+
+To demonstrate the same process programmatically with the local server running:
+
+```sh
+.venv/bin/python scripts/replay_intent.py
+```
+
+Expected progression: ad click `0.10 / exploring`, repeated click `0.10 / exploring`, flight search `0.55 / planning`, hotel search `0.95 / planning`, booking `1.00 / booked`. This is a rules score, not travel probability. Each replay uses new synthetic event IDs and retains an audit trail; it does not delete existing signals or change consent. It requires personalization permission on the dining profile.
+
 All profiles, signal sources, cards, benefits, offers, points rules, conversion rates, merchants, acceptance facts, eligibility conditions and spending assumptions are synthetic JSON fixtures. The Rome illustration is a decorative schematic, not a map. Default AI ranking is deterministic; optional LLM transport is tested using HTTP mocks.
 
 ## Production evolution (not implemented)

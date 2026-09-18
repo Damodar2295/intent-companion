@@ -7,6 +7,10 @@ import {
 } from "./Recommendations";
 import { shortName } from "./format";
 import { RomeIllustration } from "./RomeIllustration";
+import { IntentStudio } from "./IntentStudio";
+import { BusinessApp } from "./BusinessApp";
+import { MobileNavigation } from "./JourneyShell";
+import { IntentControls, MerchantLookup, SupplementaryExplore } from "./ExperienceControls";
 import type {
   Customer,
   Detection,
@@ -36,12 +40,19 @@ const currentJourney = (): Journey =>
     : "member";
 
 export function App() {
+  return new URLSearchParams(window.location.search).get("journey") === "business" ? <BusinessApp /> : <ConsumerApp />;
+}
+
+function ConsumerApp() {
   const [journey, setJourney] = useState<Journey>(currentJourney);
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
   const [scenario, setScenario] = useState<Scenario | null>(null);
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [experience, setExperience] = useState<Experience | null>(null);
-  const [busy, setBusy] = useState(true);
+  const [detectedIntentId, setDetectedIntentId] = useState("");
+  const [loading, setBusy] = useState(true);
+  const [simulating, setSimulating] = useState(false);
+  const busy = loading || simulating;
   const [error, setError] = useState("");
   const [abstention, setAbstention] = useState<string[]>([]);
   const [card, setCard] = useState("");
@@ -50,45 +61,52 @@ export function App() {
   const [preferenceToAdd, setPreferenceToAdd] = useState("");
   const sequence = useRef(0);
 
-  const loadScenario = useCallback(async (selected: Scenario) => {
-    const run = ++sequence.current;
-    setScenario(selected);
-    setBusy(true);
-    setError("");
-    setAbstention([]);
-    setExperience(null);
-    setCustomer(null);
-    setNotice("");
-    try {
-      const profile = await api<Customer>(`/customers/${selected.customer_id}`);
-      if (run !== sequence.current) return;
-      setCustomer(profile);
-      const detection = await api<Detection>("/intents/detect", "POST", {
-        customer_id: selected.customer_id,
-        signal_ids: selected.signal_ids,
-      });
-      if (run !== sequence.current) return;
-      if (!detection.intent) {
-        setAbstention(detection.abstention_reasons);
-        return;
-      }
-      const next = await api<Experience>("/companion", "POST", {
-        customer_id: selected.customer_id,
-        intent_id: detection.intent.intent_id,
-      });
-      if (run !== sequence.current) return;
-      setExperience(next);
-      setAbstention(next.abstention_reasons);
-      setCard(next.recommended_cards[0]?.product_ids[0] || "");
-    } catch (e) {
-      if (run === sequence.current)
-        setError(
-          e instanceof Error ? e.message : "Unable to load the experience.",
+  const loadScenario = useCallback(
+    async (selected: Scenario, keepCustomer = false) => {
+      const run = ++sequence.current;
+      setScenario(selected);
+      setBusy(true);
+      setError("");
+      setAbstention([]);
+      setExperience(null);
+      setDetectedIntentId("");
+      if (!keepCustomer) setCustomer(null);
+      setNotice("");
+      try {
+        const profile = await api<Customer>(
+          `/customers/${selected.customer_id}`,
         );
-    } finally {
-      if (run === sequence.current) setBusy(false);
-    }
-  }, []);
+        if (run !== sequence.current) return;
+        setCustomer(profile);
+        const detection = await api<Detection>("/intents/detect", "POST", {
+          customer_id: selected.customer_id,
+          signal_ids: selected.signal_ids,
+        });
+        if (run !== sequence.current) return;
+        if (!detection.intent) {
+          setAbstention(detection.abstention_reasons);
+          return;
+        }
+        setDetectedIntentId(detection.intent.intent_id);
+        const next = await api<Experience>("/companion", "POST", {
+          customer_id: selected.customer_id,
+          intent_id: detection.intent.intent_id,
+        });
+        if (run !== sequence.current) return;
+        setExperience(next);
+        setAbstention(next.abstention_reasons);
+        setCard(next.recommended_cards[0]?.product_ids[0] || "");
+      } catch (e) {
+        if (run === sequence.current)
+          setError(
+            e instanceof Error ? e.message : "Unable to load the experience.",
+          );
+      } finally {
+        if (run === sequence.current) setBusy(false);
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     let active = true;
@@ -222,6 +240,16 @@ export function App() {
       </aside>
       <main id="top">
         <header className="topbar">
+          <a
+            className="mobile-brand"
+            href="#top"
+            aria-label="Intent Companion home"
+          >
+            <span className="brand-mark">
+              i<span>c</span>
+            </span>
+            <strong>intent companion</strong>
+          </a>
           <div className="breadcrumb">
             Your companion <span>/</span> <strong>Rome</strong>
           </div>
@@ -231,6 +259,7 @@ export function App() {
           </span>
         </header>
         <div className="journey-switch" aria-label="Choose your journey">
+          <a className="business-entry" href="?journey=business"><strong>Small Business</strong><span>Build your next chapter</span></a>
           <button
             disabled={busy}
             aria-pressed={isProspect}
@@ -322,14 +351,35 @@ export function App() {
                 : "Let’s make the most of your membership."}
             </p>
             <div className="trip-meta">
-              <span>10 — 15 OCT 2026</span>
-              <span>5 NIGHTS</span>
-              <span>LEISURE</span>
+              <span>
+                {experience?.intent
+                  ? `${experience.intent.start_date} — ${experience.intent.end_date}`
+                  : "10 — 15 OCT 2026"}
+              </span>
+              <span>
+                {experience?.intent?.intent_stage?.toUpperCase() ||
+                  "TRIP PREVIEW"}
+              </span>
+              <span>
+                {experience?.intent?.purpose.toUpperCase() || "LEISURE"}
+              </span>
             </div>
           </div>
           <RomeIllustration />
           <div className="hero-coordinate">41.9028° N &nbsp; 12.4964° E</div>
         </section>
+        {customer && scenario && (
+          <IntentStudio
+            key={customer.customer_id}
+            customer={customer}
+            disabled={busy}
+            onRunState={setSimulating}
+            onApply={(ids) =>
+              loadScenario({ ...scenario, signal_ids: ids }, true)
+            }
+          />
+        )}
+        {customer && detectedIntentId && scenario && <IntentControls owner={customer.customer_id} intent={detectedIntentId} onChange={() => loadScenario(scenario)} />}
         <div aria-live="polite" className="status-region">
           {busy && (
             <div className="loading">
@@ -615,6 +665,8 @@ export function App() {
             </details>
           </div>
           <aside className="context-column">
+            {customer && <MerchantLookup key={`${customer.customer_id}-${customer.consent.allowed}`} owner={customer.customer_id} />}
+            {customer?.consent.allowed && <SupplementaryExplore />}
             {experience?.status === "ready" && selectedCard && (
               <ValuePanel
                 value={selectedValue}
@@ -754,6 +806,7 @@ export function App() {
             No credit decisions. No live bookings.
           </p>
         </footer>
+        <MobileNavigation />
       </main>
     </div>
   );

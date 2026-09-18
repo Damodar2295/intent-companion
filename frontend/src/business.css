@@ -1,0 +1,557 @@
+.business-shell {
+  max-width: 1440px;
+  margin: auto;
+}
+.business-body {
+  padding: 24px 48px;
+}
+.business-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 48px;
+  background: white;
+  border-bottom: 1px solid var(--line);
+}
+.business-wordmark {
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--navy);
+}
+.business-wordmark span {
+  font-weight: 400;
+  color: #667798;
+}
+.experience-links {
+  display: flex;
+  gap: 8px;
+  margin: 0 0 40px;
+  background: #eaf0fa;
+  border-radius: 14px;
+  padding: 6px;
+}
+.experience-links a {
+  flex: 1;
+  text-align: center;
+  padding: 13px;
+  font-size: 13px;
+  border-radius: 10px;
+}
+.experience-links a[aria-current] {
+  background: white;
+  color: var(--blue);
+  box-shadow: 0 3px 10px #13265a09;
+}
+.business-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 24px 0;
+}
+.business-heading h1 {
+  font-size: clamp(28px, 4vw, 42px);
+  letter-spacing: -1.4px;
+  margin: 12px 0;
+}
+.business-heading p {
+  font-size: 14px;
+}
+.business-scenarios {
+  display: flex;
+  gap: 16px;
+  margin: 28px 0;
+}
+.business-scenarios button {
+  flex: 1;
+  text-align: left;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: white;
+  color: var(--navy);
+}
+.business-scenarios button.selected {
+  border-color: #3765df;
+  box-shadow: inset 3px 0 #3765df;
+}
+.business-scenarios span {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+.business-hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 42px;
+  background:
+    radial-gradient(ellipse at top right, #4172cb 0, transparent 65%), #123071;
+  border-radius: 20px;
+  color: white;
+}
+.business-hero h2 {
+  font-family: Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(34px, 5vw, 62px);
+  margin: 16px 0;
+}
+.business-hero p {
+  color: #c4d7f9;
+  font-size: 14px;
+}
+.business-hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+.business-hero-tags span {
+  border: 1px solid #ffffff40;
+  border-radius: 30px;
+  padding: 6px 14px;
+  font-size: 11px;
+  text-transform: capitalize;
+}
+.business-hero-aside {
+  min-width: 170px;
+  padding: 20px 24px;
+  border-left: 1px solid #ffffff30;
+}
+.business-hero-aside > span {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+}
+.business-hero-aside strong {
+  display: block;
+  font-size: 54px;
+  font-weight: 400;
+}
+.business-hero-aside small {
+  font-size: 16px;
+  color: #b9ccee;
+}
+.intent-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 22px;
+  margin: 22px 0;
+  background: #eef4ff;
+  border-radius: 12px;
+}
+.intent-controls h3 {
+  font-size: 17px;
+  margin: 6px 0;
+}
+.intent-controls p {
+  font-size: 12px;
+}
+.control-actions {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.business-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin: 28px 0 40px;
+}
+.business-stats article {
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: white;
+}
+.business-stats article > span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.business-stats strong {
+  display: block;
+  font-size: clamp(24px, 3vw, 36px);
+  letter-spacing: -1px;
+  margin: 8px 0;
+}
+.business-stats p {
+  font-size: 11px;
+  line-height: 1.7;
+}
+.business-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 26px;
+  align-items: start;
+}
+.business-opportunities {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.business-opportunities .recommendation-tile {
+  padding: 24px;
+}
+.business-opportunities h3 {
+  font-size: 21px;
+  margin: 14px 0;
+}
+.business-opportunities p,
+.business-opportunities li {
+  font-size: 12px;
+  line-height: 1.8;
+}
+.business-opportunities details {
+  margin: 15px 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+}
+.source-label {
+  display: block;
+  font-size: 9px;
+  overflow-wrap: anywhere;
+  color: #8791a5;
+}
+.business-value-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+  margin: 12px 0;
+}
+.business-value-line strong {
+  font-size: 23px;
+  color: var(--blue);
+}
+.business-value-line span {
+  font-size: 11px;
+  color: var(--muted);
+}
+.business-value-panel {
+  padding: 28px;
+  background: #11285d;
+  color: white;
+  border-radius: 16px;
+  position: sticky;
+  top: 24px;
+}
+.business-value-panel h2 {
+  font-size: 42px;
+  margin: 20px 0 4px;
+}
+.business-value-panel h3 {
+  font-size: 28px;
+  margin-top: 24px;
+}
+.business-value-panel p {
+  color: #c0cfee;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.business-value-panel hr {
+  border: 0;
+  border-top: 1px solid #ffffff33;
+  margin: 24px 0;
+}
+.business-value-panel a {
+  display: inline-block;
+  margin-top: 24px;
+}
+.business-editor {
+  padding: 30px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  margin-top: 36px;
+}
+.goal-label {
+  display: grid;
+  gap: 8px;
+  margin: 20px 0 12px;
+  font-size: 13px;
+}
+.business-editor textarea,
+.business-editor select,
+.business-editor input:not([type="checkbox"]),
+.merchant-lookup input {
+  width: 100%;
+  padding: 12px;
+  color: var(--navy);
+  border: 1px solid #d4deef;
+  border-radius: 8px;
+  font: inherit;
+  background: #fbfcff;
+}
+.business-editor textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+.business-editor fieldset {
+  border: 0;
+  padding: 0;
+  margin: 24px 0;
+}
+.business-editor legend {
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+.priority-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.priority-options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  padding: 10px 14px;
+  border-radius: 30px;
+  font-size: 12px;
+  text-transform: capitalize;
+}
+.spend-editor {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin: 24px 0;
+}
+.spend-editor article {
+  background: #f7f9fd;
+  padding: 22px;
+  border-radius: 12px;
+}
+.spend-editor h3 {
+  text-transform: capitalize;
+  font-size: 17px;
+}
+.spend-editor p {
+  font-size: 11px;
+  margin: 7px 0;
+}
+.spend-editor label {
+  display: grid;
+  gap: 5px;
+  font-size: 12px;
+  margin-top: 12px;
+}
+.shared-interest {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 0;
+  font-size: 13px;
+}
+.shared-interest input {
+  width: 18px;
+  height: 18px;
+}
+.draft-review {
+  background: #edf4ff;
+  border: 1px solid #ccdffc;
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 20px;
+}
+.draft-review h3 {
+  margin: 12px 0;
+  text-transform: capitalize;
+}
+.draft-review p {
+  font-size: 12px;
+  line-height: 1.8;
+}
+.merchant-lookup {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 24px;
+  margin: 22px 0;
+}
+.merchant-lookup summary {
+  font-weight: 600;
+  font-size: 15px;
+}
+.merchant-lookup summary span {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.merchant-lookup p {
+  font-size: 12px;
+  line-height: 1.8;
+  margin: 10px 0;
+}
+.merchant-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+.merchant-lookup form {
+  display: flex;
+  gap: 12px;
+  align-items: end;
+  flex-wrap: wrap;
+}
+.merchant-lookup label {
+  font-size: 12px;
+}
+.merchant-lookup form label {
+  flex: 1;
+  min-width: 130px;
+}
+.merchant-result {
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+  margin-top: 20px;
+}
+.merchant-result h3 {
+  margin: 10px 0;
+}
+.merchant-result h4 {
+  margin-bottom: 8px;
+}
+.merchant-result li,
+.merchant-result small {
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+.business-trace {
+  font-size: 12px;
+  line-height: 2;
+}
+.business-entry {
+  flex: 1;
+  padding: 15px 12px;
+  color: #536581;
+  border-radius: 10px;
+  order: 3;
+}
+.business-entry:hover {
+  background: white;
+}
+.business-entry strong {
+  display: block;
+  font-size: 14px;
+}
+.business-entry span {
+  font-size: 11px;
+}
+@media (max-width: 1000px) {
+  .business-body {
+    padding: 24px;
+  }
+  .business-columns {
+    grid-template-columns: 1fr;
+  }
+  .business-value-panel {
+    position: static;
+  }
+}
+@media (max-width: 740px) {
+  .business-body {
+    padding: 16px 16px 90px;
+  }
+  .business-topbar {
+    padding: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .experience-links {
+    margin: 0 0 24px;
+  }
+  .experience-links a {
+    font-size: 12px;
+    padding: 12px 6px;
+  }
+  .business-hero {
+    padding: 26px;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .business-hero-aside {
+    border-left: 0;
+    border-top: 1px solid #ffffff33;
+    padding: 16px 0 0;
+    min-width: 0;
+  }
+  .business-hero-aside strong {
+    font-size: 36px;
+  }
+  .business-stats {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .business-stats article {
+    padding: 18px;
+  }
+  .business-opportunities,
+  .spend-editor {
+    grid-template-columns: 1fr;
+  }
+  .business-editor {
+    padding: 20px;
+  }
+  .business-scenarios {
+    gap: 10px;
+  }
+  .business-scenarios button {
+    padding: 14px;
+  }
+  .business-scenarios strong {
+    font-size: 13px;
+  }
+  .business-entry {
+    padding: 10px 8px;
+    display: flex;
+    align-items: center;
+  }
+  .business-entry strong {
+    font-size: 12px;
+  }
+  .business-entry span {
+    display: none;
+  }
+  .business-shell button,
+  .business-shell input,
+  .business-shell select {
+    min-height: 44px;
+  }
+  .business-shell input[type="checkbox"] {
+    min-height: 18px;
+  }
+  .business-editor textarea,
+  .business-editor input,
+  .business-editor select {
+    font-size: 16px;
+  }
+  .business-shell .mobile-nav a {
+    font-size: 10px;
+  }
+  .business-shell .mobile-nav a > span {
+    font-size: 18px;
+  }
+  .intent-controls {
+    padding: 18px;
+  }
+  .merchant-lookup {
+    padding: 18px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

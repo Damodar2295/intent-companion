@@ -5,6 +5,7 @@ import logging
 from typing import TypedDict
 from uuid import uuid4
 
+from agent import feedback
 from agent.ai import AIService, RankingResult
 from agent.domain import CompanionExperience, CustomerContext, IntentContext, Recommendation, TraceStep, ValueSummary
 from agent.intent_engine import IntentEngine
@@ -40,6 +41,8 @@ class CompanionService:
         customer = self.repository.customer(state["customer_id"])
         stored = self.repository.intent(state["intent_id"])
         intent = self.intent_engine.refresh(customer, stored)
+        if feedback.status(self.repository, feedback.consumer_key(intent)) == "dismissed":
+            raise Abstain("This trip intent was dismissed. Restore it explicitly to see recommendations.")
         if intent.confidence <= 0:
             raise Abstain("There is insufficient signal evidence to personalize this trip.")
         return {"customer": customer, "intent": intent}
@@ -63,6 +66,8 @@ class CompanionService:
         if self.repository.customer(customer.customer_id) != customer:
             raise Abstain("Preferences or consent changed during generation. Regenerate the experience.")
         self.intent_engine.refresh(customer, intent)
+        if feedback.status(self.repository, feedback.consumer_key(intent)) == "dismissed":
+            raise Abstain("This trip intent was dismissed during generation.")
         grouped = {
             kind: [r for r in ranking.recommendations if r.recommendation_type == kind]
             for kind in ("card", "benefit", "offer", "reward", "merchant")

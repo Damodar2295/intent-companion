@@ -11,6 +11,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import Field
 
 from agent.domain import CompanionExperience, Consent, CustomerContext, IntentContext, IntentSignal, Model, Preference
+from agent.extension_api import routes
 from agent.initialize import lifespan
 from agent.repositories import Abstain, Conflict, NotFound
 from config.settings import ROOT, Settings
@@ -103,7 +104,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     @router.get("/scenarios")
     async def scenarios():
-        return json.loads((ROOT / "data/scenarios.json").read_text())
+        return json.loads((app.state.settings.fixture_dir / "scenarios.json").read_text())
 
     @router.post("/signals")
     async def ingest(signal: IntentSignal):
@@ -155,6 +156,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def companion(body: CompanionRequest):
         return await app.state.companion.run(body.customer_id, body.intent_id)
 
+    router.include_router(routes(app))
     app.include_router(router)
     app.include_router(router, prefix="/api", include_in_schema=False)
 

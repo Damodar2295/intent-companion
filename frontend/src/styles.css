@@ -340,6 +340,64 @@ main {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
 }
+.intent-studio {
+  margin: 20px 0;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: white;
+}
+.intent-studio summary {
+  cursor: pointer;
+  color: var(--navy);
+  font-weight: 600;
+}
+.intent-studio summary span {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  margin-top: 8px;
+  color: #63718a;
+}
+.intent-studio p {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #63718a;
+}
+.intent-studio form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: end;
+}
+.intent-studio label {
+  display: grid;
+  gap: 8px;
+  flex: 1 1 150px;
+  font-size: 12px;
+}
+.intent-studio input,
+.intent-studio select {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: white;
+  color: var(--navy);
+}
+.intent-timeline {
+  padding-left: 22px;
+}
+.intent-timeline li {
+  padding: 8px;
+  font-size: 12px;
+}
+.intent-timeline span {
+  display: block;
+  color: #63718a;
+  margin-top: 6px;
+}
 .journey-switch {
   display: flex;
   gap: 8px;
@@ -1257,6 +1315,10 @@ main {
   text-align: right;
   line-height: 1.8;
 }
+.mobile-brand,
+.mobile-nav {
+  display: none;
+}
 @media (min-width: 1600px) {
   main {
     padding: 0 60px;
@@ -1377,15 +1439,48 @@ main {
   }
 }
 @media (max-width: 740px) {
+  html {
+    scroll-padding-top: 80px;
+    overflow-x: hidden;
+  }
+  body {
+    background: #f4f7fc;
+    overflow-x: hidden;
+  }
   .sidebar {
     display: none;
   }
   main {
     width: 100%;
     padding: 0 20px;
+    padding-bottom: calc(78px + env(safe-area-inset-bottom));
   }
   .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
     height: 65px;
+    margin: 0 -20px;
+    padding: 0 20px;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .mobile-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--navy);
+    text-decoration: none;
+    font-size: 12px;
+  }
+  .mobile-brand .brand-mark {
+    width: 29px;
+    height: 29px;
+    font-size: 15px;
+  }
+  .breadcrumb {
+    display: none;
   }
   .page-heading {
     padding: 27px 0 24px;
@@ -1399,6 +1494,17 @@ main {
   }
   .scenario-grid {
     gap: 8px;
+  }
+  .journey-switch {
+    position: relative;
+    margin: 14px 0 20px;
+  }
+  .journey-switch button {
+    min-height: 54px;
+    padding: 10px 12px;
+  }
+  .journey-switch span {
+    display: none;
   }
   .scenario {
     padding: 11px 8px;
@@ -1416,6 +1522,22 @@ main {
   .trip-hero {
     padding: 28px;
     min-height: 260px;
+  }
+  .intent-studio {
+    border-radius: 16px;
+  }
+  .intent-studio form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .intent-studio form label:first-child,
+  .intent-studio form .button {
+    grid-column: 1 / -1;
+  }
+  .intent-studio input,
+  .intent-studio select,
+  .intent-studio .button {
+    min-height: 44px;
   }
   .trip-hero h2 {
     font-size: 43px;
@@ -1468,13 +1590,73 @@ main {
   .signal-details summary > span {
     display: block;
   }
+  .card-selector,
+  .collection-tabs {
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .card-selector::-webkit-scrollbar,
+  .collection-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .card-selector button,
+  .collection-tabs button {
+    flex: 0 0 auto;
+    min-height: 44px;
+  }
+  .mobile-nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    padding: 7px 10px calc(7px + env(safe-area-inset-bottom));
+    border-top: 1px solid #dce4f1;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 -8px 28px rgba(16, 36, 89, 0.08);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
+  .mobile-nav a {
+    display: flex;
+    min-height: 47px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 3px;
+    color: #62718a;
+    text-decoration: none;
+    font-size: 9px;
+    font-weight: 600;
+  }
+  .mobile-nav a:first-child {
+    color: var(--blue);
+  }
+  .mobile-nav span {
+    font-size: 17px;
+    line-height: 1;
+  }
 }
 @media (max-width: 440px) {
   main {
-    padding: 0 15px;
+    padding-left: 15px;
+    padding-right: 15px;
   }
   .page-heading h1 {
     font-size: 28px;
+  }
+  .topbar {
+    margin-left: -15px;
+    margin-right: -15px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .page-heading {
+    padding-top: 20px;
   }
   .demo-badge {
     font-size: 8px;
@@ -1504,6 +1686,9 @@ main {
   .trip-hero {
     min-height: 260px;
     padding: 25px;
+  }
+  .trip-meta {
+    flex-wrap: wrap;
   }
   .hero-content {
     max-width: 100%;
@@ -1553,10 +1738,11 @@ main {
     font-size: 12px;
   }
   .collection-tabs {
-    gap: 16px;
+    gap: 8px;
   }
   .collection-tabs button {
     font-size: 11px;
+    padding: 10px 12px;
   }
   .preference-form select {
     font-size: 16px;
