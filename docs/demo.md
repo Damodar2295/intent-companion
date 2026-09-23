@@ -36,3 +36,9 @@ All profiles, signal sources, cards, benefits, offers, points rules, conversion 
 ## Production evolution (not implemented)
 
 Add identity and per-customer authorization before exposing the app beyond localhost. Establish consent provenance, retention/deletion rules, catalog ownership and verified fact ingestion. Replace the repository implementation with a managed relational database and migrations. Add rate limits, transaction isolation, deployment hardening and monitoring. Evaluate model ranking with an approved benchmark before enabling it, and add source adapters only for explicitly permissioned signals. Do not treat this prototype as approved for real financial decisions.
+
+## Outing pitch demonstration
+
+Open **An outing, made for you** in the consumer page. Ask for an evening event, dining and shopping in Rome; set a date and time window, then plan. Inspect progress, alternative timelines and per-field evidence. Default mode labels all places and routes fictional. Choose a card, inspect illustrative conditions, confirm only the assumptions relevant to your demo, and replan to update the value total. Change the card to evaluate it independently. Values are not live AMEX offers, and no booking occurs.
+
+For a sourced provider demo, follow [realtime setup](outing.md#run-locally). Do not describe a newly fetched event listing as confirmed inventory. Missing credentials, unknown opening hours and route failures remain visible instead of being replaced with mock data.

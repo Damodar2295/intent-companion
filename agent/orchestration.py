@@ -40,6 +40,14 @@ class CompanionService:
     async def guard(self, state: WorkflowState) -> dict:
         customer = self.repository.customer(state["customer_id"])
         stored = self.repository.intent(state["intent_id"])
+        if stored.customer_id != customer.customer_id:
+            from agent.repositories import NotFound
+
+            raise NotFound("Unknown intent for this customer")
+        if stored.intent_type != "travel":
+            raise Abstain(
+                "This companion workflow supports travel intents; activity recommendation generation is not enabled here."
+            )
         intent = self.intent_engine.refresh(customer, stored)
         if feedback.status(self.repository, feedback.consumer_key(intent)) == "dismissed":
             raise Abstain("This trip intent was dismissed. Restore it explicitly to see recommendations.")

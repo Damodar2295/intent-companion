@@ -30,7 +30,8 @@
     "value_amount": "40",
     "currency": "USD",
     "stackable": true,
-    "stacking_group": "dining"
+    "stacking_group": "dining",
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "benefit-02",
@@ -63,7 +64,8 @@
     "value_amount": "20",
     "currency": "USD",
     "stackable": true,
-    "stacking_group": "culture"
+    "stacking_group": "culture",
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "benefit-03",
@@ -94,7 +96,8 @@
     "value_amount": null,
     "currency": null,
     "stackable": false,
-    "stacking_group": null
+    "stacking_group": null,
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "benefit-04",
@@ -126,7 +129,8 @@
     "value_amount": "90",
     "currency": "USD",
     "stackable": true,
-    "stacking_group": "hotel"
+    "stacking_group": "hotel",
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "benefit-05",
@@ -158,7 +162,8 @@
     "value_amount": "35",
     "currency": "USD",
     "stackable": true,
-    "stacking_group": "shopping"
+    "stacking_group": "shopping",
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "benefit-06",
@@ -189,7 +194,8 @@
     "value_amount": null,
     "currency": null,
     "stackable": false,
-    "stacking_group": null
+    "stacking_group": null,
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "benefit-07",
@@ -222,7 +228,8 @@
     "value_amount": "15",
     "currency": "USD",
     "stackable": true,
-    "stacking_group": "culture"
+    "stacking_group": "culture",
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "benefit-08",
@@ -252,7 +259,8 @@
     "value_amount": "25",
     "currency": "USD",
     "stackable": true,
-    "stacking_group": "transfer"
+    "stacking_group": "transfer",
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "benefit-09",
@@ -281,6 +289,7 @@
     "value_amount": null,
     "currency": null,
     "stackable": false,
-    "stacking_group": null
+    "stacking_group": null,
+    "source_type": "SYNTHETIC"
   }
 ]

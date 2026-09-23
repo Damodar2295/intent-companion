@@ -9,8 +9,12 @@ from config.settings import Settings
 
 class GraphFactory:
     @staticmethod
-    def create(repository: Repository, settings: Settings, ai: AIService | None = None) -> CompanionService:
-        provider = ai or (LLMRankingAI(settings) if settings.ai_provider == "llm" else DeterministicAI())
+    def create(
+        repository: Repository, settings: Settings, ai: AIService | None = None, gateway=None
+    ) -> CompanionService:
+        provider = ai or (
+            LLMRankingAI(settings, gateway=gateway) if settings.ai_provider == "llm" else DeterministicAI()
+        )
         service = CompanionService(repository, settings, provider)
         service.graph = build(service)
         return service

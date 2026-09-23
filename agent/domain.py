@@ -7,6 +7,7 @@ from typing import Annotated, Literal
 from pydantic import BaseModel, ConfigDict, Field, TypeAdapter, field_validator, model_validator
 
 Lifecycle = Literal["prospect", "member"]
+IntentType = Literal["travel", "dining", "event", "shopping", "lifestyle"]
 Preference = Literal["fine dining", "museums", "luxury hotels", "shopping", "dining", "culture"]
 Category = Literal["travel", "dining", "hotel", "lounge", "entertainment", "shopping", "membership", "rewards"]
 SignalType = Literal[
@@ -20,11 +21,12 @@ SignalType = Literal[
     "app_interaction",
     "customer_declared_intent",
     "event_search",
+    "event_booking",
 ]
 
 
 class Model(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
 
 
 class Consent(Model):
@@ -33,6 +35,7 @@ class Consent(Model):
 
 
 class SignalContext(Model):
+    intent_type: IntentType | None = None
     origin: str | None = None
     destination: str | None = None
     start_date: date | None = None
@@ -63,15 +66,19 @@ class IntentSignal(Model):
     timestamp: datetime
     consent: Consent = Field(default_factory=Consent)
     context: SignalContext
+    source_type: Literal["SYNTHETIC"] = "SYNTHETIC"
     synthetic: Literal[True] = True
 
     @field_validator("event_type", mode="before")
     @classmethod
     def normalize_type(cls, value):
+        if isinstance(value, str):
+            value = value.strip().lower().replace("-", "_").replace(" ", "_")
         return {
             "flight_search": "travel_search",
             "restaurant_reservation": "restaurant_booking",
             "declared_intent": "customer_declared_intent",
+            "event_reservation": "event_booking",
         }.get(value, value)
 
     @field_validator("timestamp")
@@ -92,21 +99,22 @@ class CustomerContext(Model):
     consent: Consent = Field(default_factory=Consent)
     market: str = "US"
     segment: str = "consumer"
+    source_type: Literal["SYNTHETIC"] = "SYNTHETIC"
     synthetic: Literal[True] = True
 
 
 class Evidence(Model):
-    evidence_id: str
+    evidence_id: str = Field(min_length=1)
     type: Literal["signal", "intent", "preference", "catalog", "rule"]
-    source_id: str
-    fact: str
-    weight: float | None = None
+    source_id: str = Field(min_length=1)
+    fact: str = Field(min_length=1)
+    weight: float | None = Field(default=None, ge=0, le=1)
 
 
 class IntentContext(Model):
     intent_id: str
     customer_id: str
-    intent_type: Literal["travel"] = "travel"
+    intent_type: IntentType = "travel"
     destination: str
     start_date: date
     end_date: date
@@ -119,6 +127,16 @@ class IntentContext(Model):
     signal_ids: list[str]
     created_at: datetime
     expires_at: datetime
+
+    @model_validator(mode="after")
+    def valid_window(self):
+        if self.end_date < self.start_date:
+            raise ValueError("Intent end_date must not precede start_date")
+        if self.created_at.tzinfo is None or self.expires_at.tzinfo is None:
+            raise ValueError("Intent timestamps must include a timezone")
+        if self.expires_at <= self.created_at:
+            raise ValueError("Intent expiry must follow creation")
+        return self
 
 
 class CatalogBase(Model):
@@ -135,12 +153,26 @@ class CatalogBase(Model):
     last_verified: date
     source: str
     catalog_version: str = "synthetic-v1"
+    source_type: Literal["SYNTHETIC"] = "SYNTHETIC"
     synthetic: Literal[True] = True
     conditions: list[str] = Field(default_factory=list)
     # Unknown stacking is never added to totals. Each explicit group is a separate
     # mock spending opportunity; alternatives within the group are mutually exclusive.
     stacking_group: str | None = None
     stackable: bool = False
+
+    @model_validator(mode="after")
+    def valid_catalog(self):
+        if self.valid_to < self.valid_from:
+            raise ValueError("Catalog valid_to must not precede valid_from")
+        if not self.item_id.strip():
+            raise ValueError("Catalog identity must not be blank")
+        currency = getattr(self, "currency", None)
+        if currency is not None and (
+            len(currency) != 3 or not currency.isascii() or not currency.isupper() or not currency.isalpha()
+        ):
+            raise ValueError("Currency must be a three-letter uppercase code")
+        return self
 
 
 class CardProduct(CatalogBase):
@@ -200,7 +232,7 @@ CATALOG_ADAPTER = TypeAdapter(CatalogItem)
 
 
 class ValueBreakdown(Model):
-    source_id: str
+    source_id: str = Field(min_length=1)
     product_id: str
     value_type: Literal["savings", "rewards"]
     amount: Decimal
@@ -228,9 +260,9 @@ class Recommendation(Model):
     category: Category
     product_ids: list[str]
     relevance_score: float
-    evidence: list[Evidence]
+    evidence: list[Evidence] = Field(min_length=1)
     value: list[ValueBreakdown] = Field(default_factory=list)
-    source_ids: list[str]
+    source_ids: list[str] = Field(min_length=1)
     conditions: list[str]
     explanation: str
 
@@ -261,5 +293,10 @@ class CompanionExperience(Model):
     provider_mode: str = "deterministic"
     fallback_reason: str | None = None
     trace: list[TraceStep] = Field(default_factory=list)
+    source_type: Literal["SYNTHETIC"] = "SYNTHETIC"
     synthetic: Literal[True] = True
     generated_at: datetime
+
+
+# Canonical spelling; retain the original import name and serialized fields.
+RewardOpportunity = MembershipRewardOpportunity

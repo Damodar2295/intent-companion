@@ -27,7 +27,8 @@
     "accepting_products": [
       "card-a",
       "card-b"
-    ]
+    ],
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "merchant-02",
@@ -57,7 +58,8 @@
     "accepting_products": [
       "card-a",
       "card-c"
-    ]
+    ],
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "merchant-03",
@@ -85,7 +87,8 @@
     "city": "Rome",
     "accepting_products": [
       "card-b"
-    ]
+    ],
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "merchant-04",
@@ -113,7 +116,8 @@
     "city": "Rome",
     "accepting_products": [
       "card-b"
-    ]
+    ],
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "merchant-05",
@@ -142,7 +146,8 @@
     "accepting_products": [
       "card-a",
       "card-c"
-    ]
+    ],
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "merchant-06",
@@ -172,7 +177,8 @@
     "accepting_products": [
       "card-a",
       "card-c"
-    ]
+    ],
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "merchant-07",
@@ -200,7 +206,8 @@
     "city": "Rome",
     "accepting_products": [
       "card-b"
-    ]
+    ],
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "merchant-08",
@@ -230,6 +237,7 @@
       "card-a",
       "card-b",
       "card-c"
-    ]
+    ],
+    "source_type": "SYNTHETIC"
   }
 ]

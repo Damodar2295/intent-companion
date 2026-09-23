@@ -33,7 +33,8 @@
     "value_amount": "30",
     "currency": "USD",
     "stackable": true,
-    "stacking_group": "dining"
+    "stacking_group": "dining",
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "offer-02",
@@ -69,7 +70,8 @@
     "value_amount": "12",
     "currency": "USD",
     "stackable": true,
-    "stacking_group": "culture"
+    "stacking_group": "culture",
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "offer-03",
@@ -103,7 +105,8 @@
     "value_amount": "65",
     "currency": "USD",
     "stackable": true,
-    "stacking_group": "hotel"
+    "stacking_group": "hotel",
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "offer-04",
@@ -137,7 +140,8 @@
     "value_amount": "45",
     "currency": "USD",
     "stackable": true,
-    "stacking_group": "shopping"
+    "stacking_group": "shopping",
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "offer-05",
@@ -172,7 +176,8 @@
     "value_amount": "18",
     "currency": "USD",
     "stackable": true,
-    "stacking_group": "dining"
+    "stacking_group": "dining",
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "offer-06",
@@ -208,6 +213,7 @@
     "value_amount": "22",
     "currency": "USD",
     "stackable": true,
-    "stacking_group": "shopping"
+    "stacking_group": "shopping",
+    "source_type": "SYNTHETIC"
   }
 ]

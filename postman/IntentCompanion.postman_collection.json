@@ -1,0 +1,1849 @@
+{
+  "info": {
+    "name": "Intent Companion \u2014 Phase 1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Run folders in order against an isolated seeded localhost demo. No future /api/v1 endpoints are advertised."
+  },
+  "item": [
+    {
+      "name": "01 Health",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/health",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.status === \"ready\")).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+            "name": "Readiness",
+            "request": {"method": "GET", "url": "{{baseUrl}}/api/readiness"},
+            "event": [{"listen": "test", "script": {"type": "text", "exec": [
+              "pm.test(\"Readiness response\", () => pm.expect([200, 503].includes(pm.response.code)).to.eql(true));"
+            ]}}]
+          }
+      ]
+    },
+    {
+      "name": "02 Consumer",
+      "item": [
+        {
+          "name": "Scenarios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/scenarios",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.length > 0)).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/customers/{{customerId}}",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.customer_id)).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ingest seeded signal idempotently",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/signals",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": \"evt-1-1\",\n  \"customer_id\": \"cust-prospect\",\n  \"source\": \"synthetic-scenario\",\n  \"event_type\": \"ad_click\",\n  \"timestamp\": \"2026-09-17T07:00:00Z\",\n  \"consent\": {\n    \"allowed\": true,\n    \"purpose\": \"personalization\"\n  },\n  \"context\": {\n    \"origin\": \"JFK\",\n    \"destination\": \"Rome\",\n    \"start_date\": \"2026-10-10\",\n    \"end_date\": \"2026-10-15\",\n    \"purpose\": \"leisure\",\n    \"preferences\": [\n      \"dining\",\n      \"culture\"\n    ]\n  },\n  \"synthetic\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.status === \"duplicate\")).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Detect intent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/intents/detect",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.intent.intent_type && body.intent.evidence.length)).to.eql(true); });",
+                  "pm.environment.set(\"intentId\", body.intent.intent_id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Generate companion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/companion",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"intent_id\": \"{{intentId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.status === \"ready\" && body.recommended_cards.every(r => r.evidence.length > 0))).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Read feedback",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/intents/{{intentId}}/feedback?owner_id={{customerId}}",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.status)).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Confirm intent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/intents/{{intentId}}/feedback",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"owner_id\": \"{{customerId}}\",\n  \"action\": \"confirm\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.status)).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03 Merchant",
+      "item": [
+        {
+          "name": "Consumer merchant",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/merchant/resolve",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"owner_type\": \"consumer\",\n  \"owner_id\": \"{{customerId}}\",\n  \"code\": \"DEMO-DINING\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.status === \"verified\")).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Unknown merchant",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/merchant/resolve",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"owner_type\": \"consumer\",\n  \"owner_id\": \"{{customerId}}\",\n  \"code\": \"DEMO-UNKNOWN\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.status === \"unknown\" && body.offers.length === 0)).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "04 Business",
+      "item": [
+        {
+          "name": "Business scenarios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/business/scenarios",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.length > 0)).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Business profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/businesses/{{businessId}}",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.business_id)).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Business signal idempotency",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/business/signals",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"business_id\": \"biz-bakery\",\n  \"goal_id\": \"goal-bakery-growth\",\n  \"goal_type\": \"expansion\",\n  \"timestamp\": \"2026-09-17T10:00:00Z\",\n  \"consent\": {\n    \"allowed\": true\n  },\n  \"event_id\": \"biz-bakery-goal\",\n  \"event_type\": \"declared_goal\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.status === \"duplicate\")).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Business intent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/business/intents/detect",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"business_id\": \"{{businessId}}\",\n  \"goal_id\": \"{{goalId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.intent.evidence.length > 0)).to.eql(true); });",
+                  "pm.environment.set(\"businessIntentId\", body.intent.intent_id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Business signal evidence",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/business/intents/{{businessIntentId}}/signals?business_id={{businessId}}",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.length > 0)).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Business companion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/business/companion",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"business_id\": \"{{businessId}}\",\n  \"intent_id\": \"{{businessIntentId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.status === \"ready\")).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Business feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/business/intents/{{businessIntentId}}/feedback",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"owner_id\": \"{{businessId}}\",\n  \"action\": \"confirm\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.status)).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Draft goal extraction",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/business/goals/extract",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"business_id\": \"{{businessId}}\",\n  \"text\": \"Expand with equipment and packaging next 30 days\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.goal_type === \"expansion\" && body.evidence_excerpts.length > 0)).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "05 Preferences",
+      "item": [
+        {
+          "name": "Read preferences",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/customers/{{customerId}}/preferences",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.preferences)).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Remove preference",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/customers/{{customerId}}/preferences/remove",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"preference\": \"fine dining\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(!body.stated_preferences.includes(\"fine dining\"))).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Restore preferences",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/customers/{{customerId}}/preferences",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"preferences\": [\n    \"fine dining\",\n    \"museums\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.stated_preferences.includes(\"fine dining\"))).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Withdraw consent",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/customers/{{customerId}}/consent",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"allowed\": false,\n  \"purpose\": \"personalization\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.consent.allowed === false)).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Outing denied without consent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/outings/stream",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"text\": \"Dining in Rome\",\n  \"date\": \"{{startDate}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Consent enforced\", function () { pm.expect(pm.response.code).to.eql(403); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Restore consent",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/customers/{{customerId}}/consent",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"allowed\": true,\n  \"purpose\": \"personalization\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.consent.allowed)).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Business preferences",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/businesses/{{businessId}}/preferences",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"priorities\": [\n    \"packaging\",\n    \"equipment\",\n    \"employees\",\n    \"ingredients\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.priorities.length === 4)).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Business consent",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/businesses/{{businessId}}/consent",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"allowed\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.consent.allowed)).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "06 Outing",
+      "item": [
+        {
+          "name": "Provider capabilities",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/outing/capabilities",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.mode === \"demo\")).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Stream outing",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/outings/stream",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"text\": \"An event, dining and shopping in Rome\",\n  \"city\": \"{{city}}\",\n  \"date\": \"{{startDate}}\",\n  \"timezone\": \"Europe/Rome\",\n  \"start_time\": \"17:00\",\n  \"end_time\": \"23:00\",\n  \"card_id\": \"card-a\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const events = pm.response.text().trim().split(/\\r?\\n\\r?\\n/).filter(x => x.startsWith(\"data:\")).map(x => JSON.parse(x.slice(5)));",
+                  "const body = events[events.length - 1].result;",
+                  "pm.test(\"Final SSE result\", function () { pm.expect(Boolean(body)).to.eql(true); });",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.mode === \"demo\" && body.alternatives.length > 0 && body.alternatives.every(a => a.stops.length <= 4 && a.stops.every(s => s.evidence_ids.length > 0 && new Date(s.departure) > new Date(s.arrival))))).to.eql(true); });",
+                  "pm.environment.set(\"outingId\", body.outing_id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Retrieve outing",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/outings/{{outingId}}",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", function () { pm.expect(pm.response.code).to.eql(200); });",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Contract and evidence\", function () { pm.expect(Boolean(body.outing_id === pm.environment.get(\"outingId\"))).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "07 Invalid input",
+      "item": [
+        {
+          "name": "Invalid intent body",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/intents/detect",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 422\", function () { pm.expect(pm.response.code).to.eql(422); });",
+                  "const body = pm.response.json();"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Unknown customer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/customers/unknown-phase1",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", function () { pm.expect(pm.response.code).to.eql(404); });",
+                  "const body = pm.response.json();"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Expired or absent outing",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/outings/unknown-phase1",
+            "description": "Existing Phase 1 endpoint. Uses synthetic, locally seeded data."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 404\", function () { pm.expect(pm.response.code).to.eql(404); });",
+                  "const body = pm.response.json();"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Infrastructure",
+      "item": [
+        {
+          "name": "Persistent retrieval index statistics",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/infrastructure/index"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Index statistics are explicit\", () => {",
+                  "  pm.expect(pm.response.code).to.eql(200);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(typeof body.records).to.eql(\"number\");",
+                  "  pm.expect(typeof body.by_type).to.eql(\"object\");",
+                  "  pm.expect(body.semantic_quality_verified).to.eql(false);",
+                  "  pm.expect(body.customer_retrieval_enabled).to.eql(false);",
+                  "  pm.expect(body.scope).to.eql(\"synthetic-ingestion-only\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Phase 4 Intent",
+      "item": [
+        {
+          "name": "Normalize and ingest an event booking",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/intent/signals",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_id\": \"postman-phase4-event\",\n  \"customer_id\": \"{{customerId}}\",\n  \"source\": \"synthetic-scenario\",\n  \"event_type\": \" Event-Reservation \",\n  \"timestamp\": \"2026-09-17T07:00:00Z\",\n  \"consent\": {\n    \"allowed\": true,\n    \"purpose\": \"personalization\"\n  },\n  \"context\": {\n    \"origin\": \"JFK\",\n    \"destination\": \"Rome\",\n    \"start_date\": \"2026-10-10\",\n    \"end_date\": \"2026-10-15\",\n    \"purpose\": \"leisure\",\n    \"preferences\": []\n  },\n  \"synthetic\": true,\n  \"source_type\": \"SYNTHETIC\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Phase 4 response\", () => {",
+                  "  pm.expect(pm.response.code).to.eql(200);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect([\"created\",\"duplicate\"].includes(body.status)).to.eql(true);",
+                  "  pm.expect(body.event_id).to.eql(\"postman-phase4-event\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Classify event with explained confidence",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/intent/detect",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"signal_ids\": [\n    \"postman-phase4-event\"\n  ],\n  \"debug\": true\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Phase 4 response\", () => {",
+                  "  pm.expect(pm.response.code).to.eql(200);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.status).to.eql(\"ready\");",
+                  "  pm.expect(body.intent.intent_type).to.eql(\"event\");",
+                  "  pm.expect(body.intent.intent_stage).to.eql(\"booked\");",
+                  "  pm.expect(body.intent.confidence).to.eql(0.9);",
+                  "  pm.expect(body.debug.confidence_is_probability).to.eql(false);",
+                  "  pm.expect(body.intent.evidence.length > 0).to.eql(true);",
+                  "  pm.environment.set(\"phase4IntentId\", body.intent.intent_id);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Extract reviewable entities",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/intent/extract",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"text\": \"Destination: Paris; activity: dining; 2026-10-10 to 2026-10-15.\",\n  \"consent\": {\n    \"allowed\": true\n  }\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Phase 4 response\", () => {",
+                  "  pm.expect(pm.response.code).to.eql(200);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.status).to.eql(\"ready_for_review\");",
+                  "  pm.expect(body.context.destination).to.eql(\"Paris\");",
+                  "  pm.expect(body.context.intent_type).to.eql(\"dining\");",
+                  "  pm.expect(body.requires_confirmation).to.eql(true);",
+                  "  pm.expect(body.evidence.length).to.eql(4);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ambiguous dates need clarification",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/intent/extract",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"text\": \"Dining in Rome tonight\",\n  \"consent\": {\n    \"allowed\": true\n  }\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Phase 4 response\", () => {",
+                  "  pm.expect(pm.response.code).to.eql(200);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(body.status).to.eql(\"needs_clarification\");",
+                  "  pm.expect(body.missing_fields.includes(\"start_date\")).to.eql(true);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Extraction rejects missing consent",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/intent/extract",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"text\": \"Destination: Paris; activity: dining; 2026-10-10 to 2026-10-15.\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Phase 4 response\", () => {",
+                  "  pm.expect(pm.response.code).to.eql(422);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(typeof body.detail).to.eql(\"string\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Unknown signal ownership is rejected",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/intent/detect",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"signal_ids\": [\n    \"unknown-phase4-signal\"\n  ]\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Phase 4 response\", () => {",
+                  "  pm.expect(pm.response.code).to.eql(404);",
+                  "  const body = pm.response.json();",
+                  "  pm.expect(typeof body.detail).to.eql(\"string\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Phase 5 \u2014 Search planning",
+      "item": [
+        {
+          "name": "Plan an outing",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/search/plan",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"consent\": {\n    \"allowed\": true\n  },\n  \"text\": \"Plan dining and shopping in Rome tomorrow at 6pm for three hours under EUR 100 with Amex offers\",\n  \"timezone\": \"Europe/Rome\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Expected status\", () => pm.expect(pm.response.code).to.eql(200));",
+                  "const data = pm.response.json();",
+                  "pm.test(\"Planning result\", () => {",
+                  "pm.expect(data.status).to.eql(\"READY\");",
+                  "pm.expect(data.search_plan.evidence.length > 0).to.eql(true);",
+                  "pm.expect(data.search_plan.requires_real_world_discovery).to.eql(true);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Benefits only",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/search/plan",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"consent\": {\n    \"allowed\": true\n  },\n  \"text\": \"Dining Amex benefits\",\n  \"timezone\": \"Europe/Rome\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Expected status\", () => pm.expect(pm.response.code).to.eql(200));",
+                  "const data = pm.response.json();",
+                  "pm.test(\"Planning result\", () => {",
+                  "pm.expect(data.status).to.eql(\"READY\");",
+                  "pm.expect(data.search_plan.requires_routing).to.eql(false);",
+                  "pm.expect(data.search_plan.outing).to.eql(null);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Clarify hotel location",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/search/plan",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"consent\": {\n    \"allowed\": true\n  },\n  \"text\": \"Plan dinner near my hotel in Rome tomorrow at 6pm for three hours\",\n  \"timezone\": \"Europe/Rome\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Expected status\", () => pm.expect(pm.response.code).to.eql(200));",
+                  "const data = pm.response.json();",
+                  "pm.test(\"Planning result\", () => {",
+                  "pm.expect(data.status).to.eql(\"CLARIFICATION_REQUIRED\");",
+                  "pm.expect(data.clarification_fields.includes(\"user_location\")).to.eql(true);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reject absent consent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/search/plan",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"consent\": {\n    \"allowed\": false\n  },\n  \"text\": \"Plan dining and shopping in Rome tomorrow at 6pm for three hours under EUR 100 with Amex offers\",\n  \"timezone\": \"Europe/Rome\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Expected status\", () => pm.expect(pm.response.code).to.eql(403));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Phase 6 \u2014 Tool orchestration",
+      "item": [
+        {
+          "name": "Discover dining",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/search/execute",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"consent\": {\n    \"allowed\": true\n  },\n  \"text\": \"Plan dinner in Rome tomorrow at 6pm for three hours\",\n  \"timezone\": \"Europe/Rome\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Expected status\", () => pm.expect(pm.response.code).to.eql(200));",
+                  "const data = pm.response.json();",
+                  "pm.test(\"Bounded execution\", () => {",
+                  "pm.expect(data.status).to.eql(\"READY\");",
+                  "pm.expect(data.trace.map(t => t.tool).join(\",\")).to.eql(\"search_plan,places\");",
+                  "pm.expect(data.outputs[0].usage).to.eql(\"DISCOVERY_ONLY\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Catalog only",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/search/execute",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"consent\": {\n    \"allowed\": true\n  },\n  \"text\": \"Dining Amex benefits\",\n  \"timezone\": \"Europe/Rome\",\n  \"city\": \"Rome\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Expected status\", () => pm.expect(pm.response.code).to.eql(200));",
+                  "const data = pm.response.json();",
+                  "pm.test(\"Bounded execution\", () => {",
+                  "pm.expect(data.status).to.eql(\"READY\");",
+                  "pm.expect(data.trace.map(t => t.tool).join(\",\")).to.eql(\"search_plan,cards,benefits,offers,rewards\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Partial event discovery",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/search/execute",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"consent\": {\n    \"allowed\": true\n  },\n  \"text\": \"Plan concert and dinner in Rome tomorrow at 6pm for three hours\",\n  \"timezone\": \"Europe/Rome\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Expected status\", () => pm.expect(pm.response.code).to.eql(200));",
+                  "const data = pm.response.json();",
+                  "pm.test(\"Bounded execution\", () => {",
+                  "pm.expect(data.status).to.eql(\"PARTIAL\");",
+                  "pm.expect(data.trace.some(t => t.tool === \"web\" && t.status === \"UNAVAILABLE\")).to.eql(true);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Clarify before invoking tools",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/search/execute",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"consent\": {\n    \"allowed\": true\n  },\n  \"text\": \"Plan dinner in Rome tomorrow at 6pm for three hours\",\n  \"timezone\": null\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Expected status\", () => pm.expect(pm.response.code).to.eql(200));",
+                  "const data = pm.response.json();",
+                  "pm.test(\"Bounded execution\", () => {",
+                  "pm.expect(data.status).to.eql(\"CLARIFICATION_REQUIRED\");",
+                  "pm.expect(data.trace.length).to.eql(1);",
+                  "pm.expect(data.outputs.length).to.eql(0);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reject missing consent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/search/execute",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"consent\": {\n    \"allowed\": false\n  },\n  \"text\": \"Plan dinner in Rome tomorrow at 6pm for three hours\",\n  \"timezone\": \"Europe/Rome\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Expected status\", () => pm.expect(pm.response.code).to.eql(403));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Reject invalid constraint",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/search/execute",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"consent\": {\n    \"allowed\": true\n  },\n  \"text\": \"Plan dinner in Rome tomorrow at 6pm for three hours\",\n  \"timezone\": \"Europe/Rome\",\n  \"duration_minutes\": -1\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Expected status\", () => pm.expect(pm.response.code).to.eql(422));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Phase 7 \u2014 Hybrid retrieval",
+      "item": [
+        {
+          "name": "Filtered RRF search",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/retrieval/search",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"consent\": {\n    \"allowed\": true\n  },\n  \"query\": \"Rome dining benefits\",\n  \"filters\": {\n    \"city\": \"Rome\"\n  },\n  \"top_k\": 5,\n  \"candidate_k\": 20,\n  \"debug\": true\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text",
+                "exec": [
+                  "pm.test(\"Expected status\", () => pm.expect(pm.response.code).to.eql(200));",
+                  "const data = pm.response.json();",
+                  "pm.test(\"RRF diagnostics\", () => { pm.expect(data.status !== undefined).to.eql(true); pm.expect(data.debug.rrf_k).to.eql(60); pm.expect(data.usage.includes(\"eligibility\")).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Phase 9 \u2014 Context engineering",
+      "item": [
+        {
+          "name": "Build bounded context",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/context/build",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"consent\": {\n    \"allowed\": true\n  },\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"Use only supplied evidence.\",\n      \"priority\": 100\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Find dining in Rome.\",\n      \"evidence_ids\": [\n        \"e1\"\n      ]\n    }\n  ],\n  \"evidence\": [\n    {\n      \"role\": \"tool\",\n      \"content\": \"Illustrative source record.\",\n      \"evidence_ids\": [\n        \"e1\"\n      ]\n    }\n  ],\n  \"token_budget\": 256,\n  \"debug\": true\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text",
+                "exec": [
+                  "pm.test(\"Expected status\", () => pm.expect(pm.response.code).to.eql(200));",
+                  "const data = pm.response.json();",
+                  "pm.test(\"Bounded context\", () => { pm.expect(data.estimated_tokens <= data.token_budget).to.eql(true); pm.expect(data.messages.length > 0).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Phase 10 \u2014 Model routing",
+      "item": [
+        {
+          "name": "Inspect safe routes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/llm/routes"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text",
+                "exec": [
+                  "pm.test(\"Expected status\", () => pm.expect(pm.response.code).to.eql(200));",
+                  "const data = pm.response.json();",
+                  "pm.test(\"Safe route diagnostics\", () => { pm.expect(data.secrets_exposed).to.eql(false); pm.expect(data.operations[\"search.requirements_generation\"] !== undefined).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Phase 11 \u2014 Provider integrations",
+      "item": [
+        {
+          "name": "Inspect provider capabilities",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/providers/capabilities"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text",
+                "exec": [
+                  "pm.test(\"Expected status\", () => pm.expect(pm.response.code).to.eql(200));",
+                  "const data = pm.response.json();",
+                  "pm.test(\"Provider roles\", () => { pm.expect(data.providers.places.provider).to.eql(\"google_places\"); pm.expect(data.providers.web_discovery.role).to.eql(\"discovery_only\"); pm.expect(data.secrets_exposed).to.eql(false); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Phase 12 \u2014 Merchant and AMEX value",
+      "item": [
+        {
+          "name": "Preview illustrative value",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/value/preview",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"consent\": {\n    \"allowed\": true\n  },\n  \"entity\": {\n    \"entity_id\": \"demo:merchant-01\",\n    \"entity_type\": \"DINING\",\n    \"canonical_name\": \"Terrazza Lume\",\n    \"facts\": {\n      \"name\": \"Terrazza Lume\",\n      \"address\": \"1 Fictional Demo Street, Rome\",\n      \"location\": {\n        \"lat\": 41.9,\n        \"lng\": 12.48\n      },\n      \"demo_merchant_id\": \"merchant-01\"\n    },\n    \"sources\": [],\n    \"conflicts\": {},\n    \"confidence\": {},\n    \"freshness\": {},\n    \"verification_status\": \"PARTIALLY_VERIFIED\",\n    \"relationships\": [],\n    \"merchant\": {},\n    \"amex_matches\": [],\n    \"synthetic\": true\n  },\n  \"card_id\": \"card-a\",\n  \"date\": \"2026-10-02\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text",
+                "exec": [
+                  "pm.test(\"Expected status\", () => pm.expect(pm.response.code).to.eql(200));",
+                  "const data = pm.response.json();",
+                  "pm.test(\"Illustrative value\", () => { pm.expect(data.label).to.eql(\"Demo / illustrative AMEX value\"); pm.expect(data.eligibility_evaluated).to.eql(false); pm.expect(data.points_separate).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Phase 13 \u2014 Outing planner",
+      "item": [
+        {
+          "name": "Build validated plan",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/outings/plan",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"text\": \"dining culture event\",\n  \"city\": \"Rome\",\n  \"date\": \"2026-10-02\",\n  \"timezone\": \"Europe/Rome\",\n  \"start_time\": \"17:00\",\n  \"end_time\": \"23:00\",\n  \"card_id\": \"card-a\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text",
+                "exec": [
+                  "pm.test(\"Expected status\", () => pm.expect(pm.response.code).to.eql(200));",
+                  "const data = pm.response.json();",
+                  "pm.test(\"Bounded outing\", () => { pm.expect(data.alternatives.length > 0).to.eql(true); pm.expect(data.alternatives.every(a => a.stops.length <= 4)).to.eql(true); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Phase 14 \u2014 Editable outings",
+      "item": [
+        {
+          "name": "Reject unverifiable new stop",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/outings/{{outingId}}/edit",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"{{customerId}}\",\n  \"operation\": \"ADD_STOP\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text",
+                "exec": [
+                  "pm.test(\"Expected status\", () => pm.expect(pm.response.code).to.eql(422));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Grounded outing response",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/outings/{{outingId}}/response"
+          },
+          "event": [{"listen": "test", "script": {"type": "text", "exec": [
+            "pm.test(\"Response is available or expired\", () => pm.expect([200, 404].includes(pm.response.code)).to.eql(true));"
+          ]}}]
+        },
+        {
+          "name": "Outing diagnostics",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/outings/{{outingId}}/diagnostics"
+          },
+          "event": [{"listen": "test", "script": {"type": "text", "exec": [
+            "pm.test(\"Diagnostics is available or expired\", () => pm.expect([200, 404].includes(pm.response.code)).to.eql(true));"
+          ]}}]
+        }
+      ]
+    }
+  ]
+}

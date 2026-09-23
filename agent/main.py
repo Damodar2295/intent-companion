@@ -102,6 +102,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             "configured_provider": app.state.settings.ai_provider,
         }
 
+    @router.get("/readiness")
+    async def readiness():
+        capabilities = app.state.outing.settings.capabilities()
+        checks = {"application": app.state.ready, "llm": capabilities["llm"]}
+        return {"status": "ready" if all(checks.values()) else "degraded", "checks": checks, "mode": capabilities["mode"]}
+
     @router.get("/scenarios")
     async def scenarios():
         return json.loads((app.state.settings.fixture_dir / "scenarios.json").read_text())
@@ -156,9 +162,36 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     async def companion(body: CompanionRequest):
         return await app.state.companion.run(body.customer_id, body.intent_id)
 
+    from agent.retrieval.api import index_routes
+
+    router.include_router(index_routes(app))
+    from agent.outing.api import outing_routes
+
+    router.include_router(outing_routes(app))
     router.include_router(routes(app))
     app.include_router(router)
     app.include_router(router, prefix="/api", include_in_schema=False)
+    from agent.intent_api import intent_routes
+
+    app.include_router(intent_routes(app))
+    from agent.search.api import search_routes
+
+    app.include_router(search_routes(app))
+    from agent.retrieval.api import retrieval_routes
+
+    app.include_router(retrieval_routes(app))
+    from agent.context.api import context_routes
+
+    app.include_router(context_routes(app))
+    from agent.llm.api import llm_routes
+
+    app.include_router(llm_routes(app))
+    from agent.outing.provider_api import provider_routes
+
+    app.include_router(provider_routes(app))
+    from agent.outing.value_api import value_routes
+
+    app.include_router(value_routes(app))
 
     @app.get("/", include_in_schema=False)
     async def root():

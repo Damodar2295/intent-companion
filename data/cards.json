@@ -31,7 +31,8 @@
       "dining",
       "entertainment"
     ],
-    "product_rules": "contextual_only"
+    "product_rules": "contextual_only",
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "card-b",
@@ -63,7 +64,8 @@
       "hotel",
       "shopping"
     ],
-    "product_rules": "contextual_only"
+    "product_rules": "contextual_only",
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "card-c",
@@ -96,6 +98,7 @@
       "entertainment",
       "lounge"
     ],
-    "product_rules": "contextual_only"
+    "product_rules": "contextual_only",
+    "source_type": "SYNTHETIC"
   }
 ]

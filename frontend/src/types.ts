@@ -96,3 +96,78 @@ export type Detection = {
   intent: Intent | null;
   abstention_reasons: string[];
 };
+
+export interface OutingEvidence {
+  evidence_id: string;
+  field: string;
+  value: unknown;
+  source_type: string;
+  url: string;
+  provider: string;
+  retrieved_at: string;
+  expires_at: string;
+  confidence: number;
+  attribution: string;
+}
+export interface OutingValue {
+  source_id: string;
+  title: string;
+  kind: string;
+  amount: string | null;
+  currency: string | null;
+  points: number;
+  eligible: boolean;
+  included: boolean;
+  label: string;
+  conditions: string[];
+  condition_ids: string[];
+  source: string;
+  expires_at: string;
+}
+export interface OutingResult {
+  outing_id: string;
+  status: "READY" | "PARTIAL" | "ERROR";
+  mode: "demo" | "realtime";
+  warnings: string[];
+  hypothetical: boolean;
+  expires_at: string;
+  search_plan: { timezone: string } | null;
+  alternatives: {
+    totals_by_currency: Record<string, string>;
+    reward_points: number;
+    feasibility: string;
+    routes: { destination_id: string; duration_seconds: number }[];
+    stops: {
+      arrival: string;
+      departure: string;
+      duration_assumed: boolean;
+      explanation: string;
+      entity: {
+        entity_id: string;
+        entity_type: string;
+        canonical_name: string;
+        verification_status: string;
+        facts: Record<string, unknown>;
+        sources: OutingEvidence[];
+        conflicts: Record<string, string[]>;
+        amex_matches: OutingValue[];
+      };
+    }[];
+  }[];
+}
+export interface GroundedResponse {
+  outing_id: string;
+  status: string;
+  summary: string;
+  stops: { entity_id: string; name: string; explanation: string; evidence_ids: string[] }[];
+  warnings: string[];
+  evidence_ids: string[];
+}
+export interface OutingEvent {
+  run_id: string;
+  sequence: number;
+  stage: string;
+  timestamp: string;
+  message: string;
+  result: OutingResult | null;
+}

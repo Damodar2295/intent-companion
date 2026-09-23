@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "./api";
+import { OutingPlanner } from "./OutingPlanner";
 import {
   EvidenceDetails,
   RecommendationTile,
@@ -235,7 +236,7 @@ function ConsumerApp() {
         </div>
         <div className="sidebar-footer">
           <span className="status-dot" /> Local demonstration
-          <p>Synthetic data only · No live actions</p>
+          <p>Illustrative AMEX value · No live bookings</p>
         </div>
       </aside>
       <main id="top">
@@ -368,6 +369,7 @@ function ConsumerApp() {
           <RomeIllustration />
           <div className="hero-coordinate">41.9028° N &nbsp; 12.4964° E</div>
         </section>
+        {customer && <OutingPlanner key={`outing-${customer.customer_id}`} customer={customer} />}
         {customer && scenario && (
           <IntentStudio
             key={customer.customer_id}
@@ -802,7 +804,7 @@ function ConsumerApp() {
             intent companion <span> / </span> Built around you.
           </span>
           <p>
-            All customers, cards, merchants, benefits and values are fictional.
+            Demo customers, cards, benefits and values are fictional. Outing places follow the mode shown above.
             No credit decisions. No live bookings.
           </p>
         </footer>

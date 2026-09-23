@@ -31,7 +31,8 @@
     "value_per_point": "0.01",
     "currency": "USD",
     "stackable": true,
-    "stacking_group": "dining"
+    "stacking_group": "dining",
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "reward-02",
@@ -65,7 +66,8 @@
     "value_per_point": "0.01",
     "currency": "USD",
     "stackable": true,
-    "stacking_group": "culture"
+    "stacking_group": "culture",
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "reward-03",
@@ -98,7 +100,8 @@
     "value_per_point": "0.01",
     "currency": "USD",
     "stackable": true,
-    "stacking_group": "hotel"
+    "stacking_group": "hotel",
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "reward-04",
@@ -131,7 +134,8 @@
     "value_per_point": "0.01",
     "currency": "USD",
     "stackable": true,
-    "stacking_group": "shopping"
+    "stacking_group": "shopping",
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "reward-05",
@@ -165,7 +169,8 @@
     "value_per_point": "0.01",
     "currency": "USD",
     "stackable": true,
-    "stacking_group": "culture"
+    "stacking_group": "culture",
+    "source_type": "SYNTHETIC"
   },
   {
     "item_id": "reward-06",
@@ -196,6 +201,7 @@
     "value_per_point": "0.01",
     "currency": "USD",
     "stackable": true,
-    "stacking_group": "transfer"
+    "stacking_group": "transfer",
+    "source_type": "SYNTHETIC"
   }
 ]

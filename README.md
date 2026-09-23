@@ -90,3 +90,45 @@ npx prettier --check src index.html package.json
 ```
 
 See [architecture](docs/architecture.md), [data models](docs/data-models.md), [API examples](docs/api.md), [demo walkthrough](docs/demo.md), and [verification and limitations](docs/verification.md).
+
+## Live outing discovery
+
+The consumer journey now includes an outing planner for dining, shopping, culture and events. It defaults to explicitly fictional offline demonstration, with separate realtime adapters for OpenAI Responses, Brave, Google Places, Google Routes and Ticketmaster. AMEX enrichment remains **Demo / illustrative AMEX value** in both modes. Existing recommendation and business journeys remain available.
+
+See [the outing operating guide](docs/outing.md) for setup, API examples, evidence and storage policies, validation, and the credential-enabled smoke test. Realtime interpretation requires `OPENAI_API_KEY` and an explicit `OPENAI_MODEL`; other missing providers yield partial results. No live API calls are made by the default configuration.
+
+### Phase 1 provider boundaries
+
+Model invocations now share an injected gateway while existing consumer, business and outing APIs remain compatible. See [provider configuration and SafeChain contract](docs/provider-boundaries.md) and the [Postman collection instructions](postman/README.md). Retrieval interfaces are preparatory only; no semantic search or enterprise integration is claimed. Phase 2 is not implemented.
+
+### Phase 2 canonical schemas
+
+[Canonical model documentation](docs/canonical-models.md) describes the shared import surface, additional provenance/event/experience schemas and synthetic fixtures. Validate seed integrity without changing the database using `.venv/bin/python -m scripts.validate_seeds`. Vector ingestion remains outside this phase.
+
+### Phase 3 ingestion
+
+[Vector ingestion instructions](docs/vector-ingestion.md) cover the persistent SQLite vector/FTS index, versioned upserts and `GET /api/infrastructure/index`. Embeddings are disabled by default. Explicit openai mode generates real embeddings using OPENAI_API_KEY and EMBEDDING_MODEL. test_hash remains a non-semantic test option; no enterprise embedding integration is claimed. Customer retrieval remains unchanged.
+
+### Phase 4 intent engine
+
+[Intent service documentation](docs/intent-service.md) covers the versioned signal/detection APIs, travel and lifestyle classification, transparent confidence, expiry and consent safeguards. Entity extraction is review-only, with deterministic, mock and optional gateway-backed modes. SearchPlan generation remains the next phase.
+
+Phase 5 adds [validated search requirements](docs/search-plan.md) at `POST /api/v1/search/plan`, with explicit mock/LLM modes, clarification responses and Postman examples. It stops before Phase 6 discovery orchestration.
+
+Phase 6 adds [bounded tool orchestration](docs/tool-orchestration.md) at `/api/v1/search/execute`, with concurrent selected providers, deadlines, safe invocation traces and partial results. This is a discovery/catalog stage, not a final itinerary; Phase 7 hybrid retrieval is not included.
+
+Phase 7 adds [hybrid retrieval](docs/hybrid-retrieval.md) at `/api/v1/retrieval/search`, combining filtered lexical and configured semantic candidates with RRF diagnostics. It stops before reranking and business acceptance.
+
+Phase 8 adds optional [reranking and threshold diagnostics](docs/reranking.md) to retrieval. It preserves channel/RRF scores and does not perform eligibility or savings validation.
+
+Phase 9 adds [bounded context construction](docs/context-engineering.md) at `/api/v1/context/build`, with evidence selection, deterministic pruning and token diagnostics.
+
+Phase 10 adds [safe model-route diagnostics](docs/model-routing.md) at `/api/v1/llm/routes` while keeping all model calls behind the shared gateway.
+
+Phase 11 documents [provider integrations](docs/provider-integrations.md) and adds safe capability reporting at `/api/v1/providers/capabilities`.
+
+Phase 12 adds [deterministic merchant/value preview](docs/merchant-value.md) at `/api/v1/value/preview`, with explicit illustrative AMEX labels and no invented entitlement.
+
+Phase 13 adds the JSON [outing planner](docs/outing-planner.md) at `/api/v1/outings/plan`, reusing verified providers, routing feasibility and conservative schedule/value validation.
+
+Phase 14 adds [bounded editable outings](docs/editable-outing.md) for removing stops and changing constraints while rejecting unverifiable new stops.

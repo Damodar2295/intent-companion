@@ -4,7 +4,7 @@ from datetime import UTC, datetime, time, timedelta
 from uuid import uuid4
 
 from agent.domain import CustomerContext, Evidence, IntentContext, IntentSignal
-from agent.repositories import Abstain, NotFound, Repository
+from agent.repositories import Abstain, Conflict, NotFound, Repository
 from config.settings import Settings
 
 
@@ -13,19 +13,32 @@ class IntentEngine:
         self.repository = repository
         self.settings = settings
 
+    def validate_destination(self, destination):
+        if not destination:
+            raise Abstain("A destination is required before detecting travel intent.")
+        if destination != "Rome":
+            raise Abstain("This synthetic MVP supports Rome only.")
+
+    def classify(self, signals):
+        return "travel"
+
+    def is_booked(self, intent_type, seen_types):
+        return "travel_booking" in seen_types
+
+    def signal_expiry(self, signal):
+        days = self.settings.signal_ttl_overrides.get(signal.event_type, self.settings.signal_ttl_days)
+        return signal.timestamp + timedelta(days=days)
+
     def validate_signal(self, customer: CustomerContext, signal: IntentSignal) -> None:
         if signal.customer_id != customer.customer_id:
             raise NotFound("Unknown signal for this customer")
         if not customer.consent.allowed or not signal.consent.allowed:
             raise Abstain("Personalization consent is missing or withdrawn.")
-        if not signal.context.destination:
-            raise Abstain("A destination is required before detecting travel intent.")
-        if signal.context.destination != "Rome":
-            raise Abstain("This synthetic MVP supports Rome only.")
+        self.validate_destination(signal.context.destination)
         now = self.settings.now()
         if signal.timestamp > now:
             raise Abstain("Future-dated signals cannot be used.")
-        if signal.timestamp + timedelta(days=self.settings.signal_ttl_days) <= now:
+        if self.signal_expiry(signal) <= now:
             raise Abstain("The signal has expired.")
         if signal.context.end_date and signal.context.end_date < now.date():
             raise Abstain("The trip has ended.")
@@ -37,9 +50,18 @@ class IntentEngine:
             raise Abstain("Personalization consent is missing or withdrawn.")
         if not signals:
             raise Abstain("No permissioned travel signals are available.")
-        unique = {s.event_id: s for s in signals}
+        unique = {}
+        for signal in signals:
+            if signal.event_id in unique and unique[signal.event_id] != signal:
+                raise Conflict("Event ID appears with conflicting signal content")
+            unique[signal.event_id] = signal
         for signal in unique.values():
             self.validate_signal(customer, signal)
+        destinations = {s.context.destination for s in unique.values()}
+        if len(destinations) != 1:
+            raise Abstain("Signals from different destinations cannot be merged.")
+        destination = next(iter(destinations))
+        intent_type = self.classify(list(unique.values()))
         complete = {
             (s.context.start_date, s.context.end_date, s.context.purpose)
             for s in unique.values()
@@ -69,7 +91,7 @@ class IntentEngine:
                     evidence_id=f"signal:{signal.event_id}",
                     type="signal",
                     source_id=signal.event_id,
-                    fact=f"Permissioned {signal.event_type.replace('_', ' ')} for Rome.",
+                    fact=f"Permissioned {signal.event_type.replace('_', ' ')} for {destination}.",
                     weight=weight,
                 )
             )
@@ -78,22 +100,23 @@ class IntentEngine:
             preferences.update(signal.context.preferences)
         preferences -= set(customer.suppressed_preferences)
         expires = min(
-            [s.timestamp + timedelta(days=self.settings.signal_ttl_days) for s in unique.values()]
+            [self.signal_expiry(s) for s in unique.values()]
             + [datetime.combine(end + timedelta(days=1), time.min, tzinfo=UTC)]
         )
         return IntentContext(
             intent_id=intent_id or f"intent-{uuid4().hex}",
             customer_id=customer.customer_id,
-            destination="Rome",
+            destination=destination,
+            intent_type=intent_type,
             start_date=start,
             end_date=end,
             purpose=purpose,
             preferences=sorted(preferences),
             lifecycle_stage=customer.lifecycle_stage,
             intent_stage="booked"
-            if "travel_booking" in seen_types
+            if self.is_booked(intent_type, seen_types)
             else "planning"
-            if confidence >= 0.4
+            if confidence >= self.settings.intent_planning_threshold
             else "exploring",
             confidence=round(min(1, confidence), 4),
             evidence=evidence,

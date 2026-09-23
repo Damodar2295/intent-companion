@@ -15,7 +15,8 @@
     },
     "market": "US",
     "segment": "consumer",
-    "synthetic": true
+    "synthetic": true,
+    "source_type": "SYNTHETIC"
   },
   {
     "customer_id": "cust-dining",
@@ -36,7 +37,8 @@
     },
     "market": "US",
     "segment": "consumer",
-    "synthetic": true
+    "synthetic": true,
+    "source_type": "SYNTHETIC"
   },
   {
     "customer_id": "cust-stay",
@@ -57,6 +59,7 @@
     },
     "market": "US",
     "segment": "consumer",
-    "synthetic": true
+    "synthetic": true,
+    "source_type": "SYNTHETIC"
   }
 ]

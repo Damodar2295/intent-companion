@@ -1,0 +1,282 @@
+{
+  "sources": [
+    {
+      "source_id": "seed-knowledge-v1",
+      "source_type": "SYNTHETIC",
+      "publisher": "Intent Companion fictional fixtures",
+      "url": "synthetic:knowledge/v1",
+      "retrieved_at": "2026-09-17T12:00:00Z",
+      "verified_at": "2026-09-17T12:00:00Z",
+      "expires_at": "2026-12-31T00:00:00Z",
+      "freshness_policy": "fixture-only-not-live",
+      "data_completeness": "PARTIAL",
+      "attribution": "Fictional hackathon data; no live inventory or entitlement."
+    }
+  ],
+  "places": [
+    {
+      "source_type": "SYNTHETIC",
+      "source_ids": [
+        "seed-knowledge-v1"
+      ],
+      "market": "US",
+      "country": "IT",
+      "city": "Rome",
+      "category": "CULTURE",
+      "data_completeness": "PARTIAL",
+      "place_id": "seed-venue-0",
+      "name": "Demo Lantern Gallery",
+      "description": "Fictional culture venue in Rome; no verified hours.",
+      "address": "1 Fictional Example Street, Rome"
+    },
+    {
+      "source_type": "SYNTHETIC",
+      "source_ids": [
+        "seed-knowledge-v1"
+      ],
+      "market": "US",
+      "country": "IT",
+      "city": "Milan",
+      "category": "CULTURE",
+      "data_completeness": "PARTIAL",
+      "place_id": "seed-venue-1",
+      "name": "Demo Lantern Gallery",
+      "description": "Fictional culture venue in Milan; no verified hours.",
+      "address": "2 Fictional Example Street, Milan"
+    },
+    {
+      "source_type": "SYNTHETIC",
+      "source_ids": [
+        "seed-knowledge-v1"
+      ],
+      "market": "US",
+      "country": "FR",
+      "city": "Paris",
+      "category": "CULTURE",
+      "data_completeness": "PARTIAL",
+      "place_id": "seed-venue-2",
+      "name": "Demo Lantern Gallery",
+      "description": "Fictional culture venue in Paris; no verified hours.",
+      "address": "3 Fictional Example Street, Paris"
+    }
+  ],
+  "events": [
+    {
+      "source_type": "SYNTHETIC",
+      "source_ids": [
+        "seed-knowledge-v1"
+      ],
+      "market": "US",
+      "country": "IT",
+      "city": "Rome",
+      "category": "CULTURE",
+      "data_completeness": "PARTIAL",
+      "event_id": "seed-event-0-2",
+      "venue_id": "seed-venue-0",
+      "name": "Demo Evening Art Walk",
+      "description": "Fictional recurring art event in Rome, October 2.",
+      "starts_at": "2026-10-02T18:00:00+02:00",
+      "ends_at": "2026-10-02T19:00:00+02:00",
+      "timezone": "Europe/Rome",
+      "status": "SCHEDULED"
+    },
+    {
+      "source_type": "SYNTHETIC",
+      "source_ids": [
+        "seed-knowledge-v1"
+      ],
+      "market": "US",
+      "country": "IT",
+      "city": "Rome",
+      "category": "CULTURE",
+      "data_completeness": "PARTIAL",
+      "event_id": "seed-event-0-3",
+      "venue_id": "seed-venue-0",
+      "name": "Demo Evening Art Walk",
+      "description": "Fictional recurring art event in Rome, October 3.",
+      "starts_at": "2026-10-03T18:00:00+02:00",
+      "ends_at": "2026-10-03T19:00:00+02:00",
+      "timezone": "Europe/Rome",
+      "status": "SCHEDULED"
+    },
+    {
+      "source_type": "SYNTHETIC",
+      "source_ids": [
+        "seed-knowledge-v1"
+      ],
+      "market": "US",
+      "country": "IT",
+      "city": "Milan",
+      "category": "CULTURE",
+      "data_completeness": "PARTIAL",
+      "event_id": "seed-event-1-2",
+      "venue_id": "seed-venue-1",
+      "name": "Demo Evening Art Walk",
+      "description": "Fictional recurring art event in Milan, October 2.",
+      "starts_at": "2026-10-02T18:00:00+02:00",
+      "ends_at": "2026-10-02T19:00:00+02:00",
+      "timezone": "Europe/Rome",
+      "status": "SCHEDULED"
+    },
+    {
+      "source_type": "SYNTHETIC",
+      "source_ids": [
+        "seed-knowledge-v1"
+      ],
+      "market": "US",
+      "country": "IT",
+      "city": "Milan",
+      "category": "CULTURE",
+      "data_completeness": "PARTIAL",
+      "event_id": "seed-event-1-3",
+      "venue_id": "seed-venue-1",
+      "name": "Demo Evening Art Walk",
+      "description": "Fictional recurring art event in Milan, October 3.",
+      "starts_at": "2026-10-03T18:00:00+02:00",
+      "ends_at": "2026-10-03T19:00:00+02:00",
+      "timezone": "Europe/Rome",
+      "status": "SCHEDULED"
+    },
+    {
+      "source_type": "SYNTHETIC",
+      "source_ids": [
+        "seed-knowledge-v1"
+      ],
+      "market": "US",
+      "country": "FR",
+      "city": "Paris",
+      "category": "CULTURE",
+      "data_completeness": "PARTIAL",
+      "event_id": "seed-event-2-2",
+      "venue_id": "seed-venue-2",
+      "name": "Demo Evening Art Walk",
+      "description": "Fictional recurring art event in Paris, October 2.",
+      "starts_at": "2026-10-02T18:00:00+02:00",
+      "ends_at": "2026-10-02T19:00:00+02:00",
+      "timezone": "Europe/Paris",
+      "status": "SCHEDULED"
+    },
+    {
+      "source_type": "SYNTHETIC",
+      "source_ids": [
+        "seed-knowledge-v1"
+      ],
+      "market": "US",
+      "country": "FR",
+      "city": "Paris",
+      "category": "CULTURE",
+      "data_completeness": "PARTIAL",
+      "event_id": "seed-event-2-3",
+      "venue_id": "seed-venue-2",
+      "name": "Demo Evening Art Walk",
+      "description": "Fictional recurring art event in Paris, October 3.",
+      "starts_at": "2026-10-03T18:00:00+02:00",
+      "ends_at": "2026-10-03T19:00:00+02:00",
+      "timezone": "Europe/Paris",
+      "status": "SCHEDULED"
+    }
+  ],
+  "experiences": [
+    {
+      "source_type": "SYNTHETIC",
+      "source_ids": [
+        "seed-knowledge-v1"
+      ],
+      "market": "US",
+      "country": "IT",
+      "city": "Rome",
+      "category": "CULTURE",
+      "data_completeness": "PARTIAL",
+      "experience_id": "seed-experience-0",
+      "name": "Demo Rome Gallery Experience",
+      "description": "Illustrative AMEX experience concept only.",
+      "event_id": "seed-event-0-2",
+      "venue_id": "seed-venue-0",
+      "eligible_product_ids": [
+        "card-a"
+      ],
+      "conditions": [
+        "Synthetic illustration, not an available AMEX offer."
+      ],
+      "valid_from": "2026-09-01T00:00:00Z",
+      "valid_to": "2026-12-31T00:00:00Z",
+      "relationship_evidence_ids": [
+        "seed-relationship-0"
+      ]
+    },
+    {
+      "source_type": "SYNTHETIC",
+      "source_ids": [
+        "seed-knowledge-v1"
+      ],
+      "market": "US",
+      "country": "IT",
+      "city": "Milan",
+      "category": "CULTURE",
+      "data_completeness": "PARTIAL",
+      "experience_id": "seed-experience-1",
+      "name": "Demo Milan Gallery Experience",
+      "description": "Illustrative AMEX experience concept only.",
+      "event_id": "seed-event-1-2",
+      "venue_id": "seed-venue-1",
+      "eligible_product_ids": [
+        "card-a"
+      ],
+      "conditions": [
+        "Synthetic illustration, not an available AMEX offer."
+      ],
+      "valid_from": "2026-09-01T00:00:00Z",
+      "valid_to": "2026-12-31T00:00:00Z",
+      "relationship_evidence_ids": [
+        "seed-relationship-1"
+      ]
+    },
+    {
+      "source_type": "SYNTHETIC",
+      "source_ids": [
+        "seed-knowledge-v1"
+      ],
+      "market": "US",
+      "country": "FR",
+      "city": "Paris",
+      "category": "CULTURE",
+      "data_completeness": "PARTIAL",
+      "experience_id": "seed-experience-2",
+      "name": "Demo Paris Gallery Experience",
+      "description": "Illustrative AMEX experience concept only.",
+      "event_id": "seed-event-2-2",
+      "venue_id": "seed-venue-2",
+      "eligible_product_ids": [
+        "card-a"
+      ],
+      "conditions": [
+        "Synthetic illustration, not an available AMEX offer."
+      ],
+      "valid_from": "2026-09-01T00:00:00Z",
+      "valid_to": "2026-12-31T00:00:00Z",
+      "relationship_evidence_ids": [
+        "seed-relationship-2"
+      ]
+    }
+  ],
+  "relationship_evidence": [
+    {
+      "evidence_id": "seed-relationship-0",
+      "type": "catalog",
+      "source_id": "seed-knowledge-v1",
+      "fact": "Fictional experience seed-experience-0 explicitly links seed-event-0-2 at seed-venue-0; no live entitlement."
+    },
+    {
+      "evidence_id": "seed-relationship-1",
+      "type": "catalog",
+      "source_id": "seed-knowledge-v1",
+      "fact": "Fictional experience seed-experience-1 explicitly links seed-event-1-2 at seed-venue-1; no live entitlement."
+    },
+    {
+      "evidence_id": "seed-relationship-2",
+      "type": "catalog",
+      "source_id": "seed-knowledge-v1",
+      "fact": "Fictional experience seed-experience-2 explicitly links seed-event-2-2 at seed-venue-2; no live entitlement."
+    }
+  ]
+}
